@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eva Kitrozoska - Portraits</title>
+<style>
+    /* Reset */
+  
+#fade-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #888888; /* neutral mid-grey */
+    pointer-events: none;      /* clicks pass through */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 9999;
+}
+
+#fade-overlay.active {
+    opacity: 1;
+}
+
+ body {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+  
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: monospace; 
+        background-color: #f5f5f5; /* light grey background */
+        color: #333333;
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* Sidebar - matched to home page layout */
+    .sidebar {
+        width: 250px;             /* same width as home page */
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        background-color: #e0e0e0; /* light aesthetic */
+    }
+
+    .sidebar h2 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+        color: #444444; 
+
+    }
+
+    .sidebar p {
+        font-size: 0.9rem;
+        color: #555555;
+        margin-bottom: 5px;
+    }
+
+   .sidebar a {
+    text-decoration: none;
+    color: #333333;
+    padding: 8px 18px;    /* default padding */
+    display: block;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    transition: all 0.3s ease; /* smooth transition */
+}
+
+.sidebar a:hover {
+    color: #8cff00;        /* neon green */
+    background-color: #3a3a3a; /* homepage-style hover bg */
+    cursor: pointer;
+}
+
+    /* Main content - matched layout */
+    .main {
+        flex-grow: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    /* Navbar / Windows */
+    .navbar {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .navbar a {
+        text-decoration: none;
+        color: #3a3a3a;
+        background-color: #dcdcdc;
+        padding: 8px 8px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+    }
+
+    .navbar a:hover {
+        background-color: #505050;
+        color: #8cff00;
+    }
+
+    /* Scrollable project showcase - matched */
+    .project-showcase {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .project-item {
+        width: 100%;             /* full width like home page */
+    }
+
+    .project-text {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .project-item a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .project-img {
+        width: 100%;             /* same as home page images */
+        max-width: 1200px;
+        height: 300px;
+        background-color: #cccccc;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .project-img:hover {
+        filter: brightness(1.05);
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 200px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            flex-direction: column;
+        }
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+        .main {
+            max-height: none;
+        }
+    }
+</style>
+</head>
+ 
+<body>
+
+<div id="fade-overlay"></div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>Eva Kitrozoska</h2>
+    <p>Portraits and visual art.</p>
+    <a href="web2.html">Back</a>
+</div>
+
+<!-- Main content -->
+<div class="main">
+    <div class="navbar">
+        <a href="web2.html">Home</a>
+    </div>
+
+    <div class="project-showcase">
+        <div class="project-item">
+            <div class="project-text">Conference Portraits 2025</div>
+            <a href="project1-details.html">
+                <div class="project-img"></div>
+            </a>
+        </div>
+        <div class="project-item">
+            <div class="project-text">Conference Portraits 2024</div>
+            <a href="project2-details.html">
+                <div class="project-img"></div>
+            </a>
+        </div>
+        <div class="project-item">
+            <div class="project-text">Conference Portraits 2023</div>
+            <a href="project3-details.html">
+                <div class="project-img"></div>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+  // Fade in on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.body.classList.add('loaded');
+    }, 10); // 10ms delay ensures browser renders opacity 0 first
+  });
+
+  // Fade out before navigating to another page
+  document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
+        e.preventDefault();
+        document.body.classList.remove('loaded'); // start fade-out
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500); // matches CSS transition
+      }
+    });
+  });
+</script>
+<script>
+  // Fade overlay in on link click
+  document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
+        e.preventDefault();
+        document.getElementById('fade-overlay').classList.add('active');
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500); // match CSS transition duration
+      }
+    });
+  });
+
+  // Fade overlay out on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.getElementById('fade-overlay').classList.remove('active');
+    }, 10); // short delay so browser renders initial opacity
+  });
+</script>
+
+
+</body>
+</html>

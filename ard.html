@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDI Theremin with Arduino</title>
+<style>
+    body {
+        font-family: monospace;
+        background-color: #1e1e1e;
+        color: #dcdcdc;
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background-color: #2a2a2a;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        transition: transform 0.6s ease;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .sidebar h2 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+        color: #8cff00;
+    }
+
+    .back-btn {
+        text-decoration: none;
+        color: #8cff00;
+        background-color: #3a3a3a;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+        background-color: #8cff00;
+        color: #1e1e1e;
+    }
+
+    /* Main content */
+    .main {
+        flex-grow: 1;
+        padding: 20px;
+        margin-left: 0;
+        transition: margin-left 0.6s ease;
+    }
+
+    .project-detail {
+        width: 100%;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .project-detail h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #8cff00;
+    }
+
+    .project-detail h2 {
+        font-size: 1.5rem;
+        margin: 30px 0 15px;
+        color: #8cff00;
+    }
+
+    .project-detail .project-img,
+    .project-detail .project-video {
+        width: 100%;
+        height: 300px;
+        background-color: #444;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .project-detail p {
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    /* Code block */
+    pre {
+        background-color: #2a2a2a;
+        padding: 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        color: #8cff00;
+        font-size: 0.9rem;
+    }
+
+    /* Tags */
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 20px 0;
+    }
+
+    .tags span {
+        background-color: #3a3a3a;
+        color: #dcdcdc;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+    }
+
+    .sidebar.hidden {
+        transform: translateX(-100%);
+    }
+
+    .hover-zone {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 70px;
+        height: 100%;
+        z-index: 99;
+    }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar hidden" id="sidebar">
+    <h2>Eva Kitrozoska</h2>
+    <a href="web2.html" class="back-btn">← Back to Portfolio</a>
+</div>
+
+<!-- Hover zone -->
+<div class="hover-zone" id="hover-zone"></div>
+
+<!-- Main content -->
+<div class="main" id="main">
+    <div class="project-detail">
+        <h1>MIDI Theremin with Arduino</h1>
+
+        <!-- Video placeholder -->
+<div class="project-video">
+    <video width="100%" height="300" controls>
+      <source src="videos/ard_video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+        <!-- Description -->
+        <p>
+            This is my first project in microcontrollers. It's a MIDI instrument that can be played in real time in two ways: 
+            as a <b>theremin</b> and with <b>potentiometer knobs</b>. You play with both hands, one controls <b>pitch</b>, the other controls <b>volume</b>. 
+            Since it's a MIDI instrument, the notes are quantized and you can choose different modes of playing: 
+            <i>major, minor, Lydian, Dorian, Mixolydian, Phrygian</i>. Additional buttons provide extra functionalities, including a recording option.
+        </p>
+
+        <p>
+            A challenge i faced was: <i>How do I send MIDI signals from an Arduino Uno board to a DAW?</i> The fastest option I found was through additional software. 
+            I used <a href="https://www.tobias-erichsen.de/software/loopmidi.html" target="_blank"><b>LoopMIDI</b></a> to create virtual MIDI ports, and 
+            <a href="https://edharmasiri.github.io/hairless-midiserial-with-minimize-to-tray/" target="_blank"><b>Hairless MIDI</b></a> to send MIDI signals from Arduino to the DAW. 
+            For the DAW, I chose <b>Cubase 12</b> and mapped the controls accordingly.
+        </p>
+
+        <!-- Components -->
+        <h2>Components</h2>
+        <p>
+            Arduino Uno board,<br>
+            2x potentiometers, <br>
+            LED + resistor, <br>
+            4 buttons (or more), <br>
+            2x HC-SR04 ultrasonic sensors, <br>
+            LED display,<br>
+            a breadboard.
+        </p>
+
+        <!-- Code -->
+        <h2>Code</h2>
+       <section id="midi-controller">
+
+  <div class="section">
+    <h3>Input handling</h3>
+    <p>
+      The program reads values from potentiometers and ultrasonic sensors. Using the <strong>time-of-flight method</strong>, sensor distances are converted into the corresponding note and volume. Buttons are also monitored, with <strong>debouncing</strong> applied to prevent false triggers and ensure reliable input.
+    </p>
+  </div>
+
+  <div class="section">
+    <h3>State management</h3>
+    <p>
+      It maintains <strong>state variables</strong> for the current note, previous note, active scale, and input mode (potentiometer or theremin). Musical scales are stored in a <strong>LUT</strong>, allowing input values to be quickly mapped to the correct MIDI notes.
+    </p>
+  </div>
+
+  <div class="section">
+    <h3>MIDI output and feedback</h3>
+    <p>
+      When notes change, the system sends <strong>MIDI messages</strong> using <strong>note-on (0x90)</strong> and <strong>note-off (0x80)</strong> commands. The LED lights up as a visual indicator when recording is active.
+    </p>
+  </div>
+
+  <div class="section">
+    <h3>Timing and loop structure</h3>
+    <p>
+      The main loop runs continuously, but note and sensor readings are updated at controlled intervals to avoid unnecessary processing and ensure smooth response. Time stamps track the last update for inputs and button presses, which also helps implement debouncing and precise timing for note playback.
+    </p>
+  </div>
+</section>
+
+
+        <!-- Tags -->
+        <div class="tags">
+            <span>Arduino</span>
+            <span>MIDI</span>
+            <span>Electronics</span>
+            <span>Embedded Systems</span>
+        </div>
+
+        <h2>Future Improvements / Tips</h2>
+<p>
+For future versions of this MIDI theremin, I would using higher-precision sensors. The HC-SR04 sensors used in this project were not very accurate for fine gestures, 
+so better ultrasonic or optical distance sensors could improve responsiveness and playability. 
+</p>
+    </div>
+</div>
+
+<script>
+    const sidebar = document.getElementById("sidebar");
+    const hoverZone = document.getElementById("hover-zone");
+
+    hoverZone.addEventListener("mouseenter", () => {
+        sidebar.classList.remove("hidden");
+    });
+
+    sidebar.addEventListener("mouseleave", () => {
+        sidebar.classList.add("hidden");
+    });
+</script>
+
+</body>
+</html>
