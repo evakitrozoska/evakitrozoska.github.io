@@ -162,6 +162,16 @@ body.loaded {
   @media (max-width: 768px) {
         .sidebar {
             width: 200px;
+.sidebar .categories {
+    flex-direction: row;   /* arrange buttons side by side */
+    flex-wrap: nowrap;     /* keep in one row, scroll if needed */
+    overflow-x: auto;      /* allow horizontal scrolling */
+    gap: 10px;             /* spacing between buttons */
+}
+
+.sidebar .categories button {
+    flex: 0 0 auto;        /* buttons don’t shrink, keep width */
+}
         }
     }
 
