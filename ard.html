@@ -132,63 +132,57 @@
         z-index: 99;
     }
 
-    /* Hide sidebar on small screens and show topbar */
-@media screen and (max-width: 768px) {
-  .sidebar { display: none; }
-  .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #2a2a2a;
-    padding: 10px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .topbar .name {
-    color: #8cff00;
-    font-size: 1.4rem;
-    font-weight: bold;
-    transition: font-size 0.3s ease;
-  }
-  .topbar .back-btn {
-    font-size: 0.95rem;
-    color: #8cff00;
-    text-decoration: none;
-    background-color: #3a3a3a;
-    padding: 5px 10px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-  }
-  .topbar .back-btn:hover {
-    background-color: #8cff00;
-    color: #1e1e1e;
-  }
-}
+    /* Topbar for mobile */
+    @media screen and (max-width: 768px) {
+      .sidebar { display: none; }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #2a2a2a;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .topbar .name {
+        color: #8cff00;
+        font-size: 1.4rem;
+        font-weight: bold;
+        transition: font-size 0.3s ease;
+      }
+      .topbar .back-btn {
+        font-size: 0.95rem;
+        color: #8cff00;
+        text-decoration: none;
+        background-color: #3a3a3a;
+        padding: 5px 10px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+      .topbar .back-btn:hover {
+        background-color: #8cff00;
+        color: #1e1e1e;
+      }
 
-/* Shrink topbar on scroll */
-@media screen and (max-width: 768px) {
-  .topbar.shrink .name {
-    font-size: 1.1rem;
-  }
-  .topbar.shrink {
-    padding: 5px 15px;
-  }
-}
+      .topbar.shrink .name {
+        font-size: 1.1rem;
+      }
+      .topbar.shrink {
+        padding: 5px 15px;
+      }
+    }
 
-}
-    
 </style>
 </head>
 <body>
-        <!-- Top bar (for mobile/tablet) -->
+<!-- Topbar (mobile) -->
 <div class="topbar" id="topbar">
   <span class="name">Eva Kitrozoska</span>
   <a href="index.html" class="back-btn">← Back</a>
 </div>
 
-    
-<!-- Sidebar -->
+<!-- Sidebar (desktop) -->
 <div class="sidebar hidden" id="sidebar">
     <h2>Eva Kitrozoska</h2>
     <a href="index.html" class="back-btn">← Back to Portfolio</a>
@@ -202,73 +196,68 @@
     <div class="project-detail">
         <h1>MIDI Theremin with Arduino</h1>
 
-        <!-- Video placeholder -->
-<div class="project-video">
-    <video width="100%" height="300" controls>
-      <source src="videos/ard_video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-</div>
+        <!-- Video -->
+        <div class="project-video">
+            <video width="100%" height="300" controls>
+              <source src="videos/ard_video.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+        </div>
+
         <!-- Description -->
         <p>
-            This is my first project in microcontrollers. It's a MIDI instrument that can be played in real time in two ways: 
-            as a <b>theremin</b> and with <b>potentiometer knobs</b>. You play with both hands, one controls <b>pitch</b>, the other controls <b>volume</b>. 
-            Since it's a MIDI instrument, the notes are quantized and you can choose different modes of playing: 
-            <i>major, minor, Lydian, Dorian, Mixolydian, Phrygian</i>. Additional buttons provide extra functionalities, including a recording option.
+            This is my first project in microcontrollers. It's a MIDI instrument played in real time: 
+            as a <b>theremin</b> and with <b>potentiometer knobs</b>. One hand controls <b>pitch</b>, the other <b>volume</b>. 
+            Notes are quantized and you can choose different modes: 
+            <i>major, minor, Lydian, Dorian, Mixolydian, Phrygian</i>. Buttons provide extra functions, including recording.
         </p>
 
         <p>
-            A challenge i faced was: <i>How do I send MIDI signals from an Arduino Uno board to a DAW?</i> The fastest option I found was through additional software. 
-            I used <a href="https://www.tobias-erichsen.de/software/loopmidi.html" target="_blank"><b>LoopMIDI</b></a> to create virtual MIDI ports, and 
-            <a href="https://edharmasiri.github.io/hairless-midiserial-with-minimize-to-tray/" target="_blank"><b>Hairless MIDI</b></a> to send MIDI signals from Arduino to the DAW. 
-            For the DAW, I chose <b>Cubase 12</b> and mapped the controls accordingly.
+            A challenge: <i>How do I send MIDI signals from Arduino to a DAW?</i> I used <a href="https://www.tobias-erichsen.de/software/loopmidi.html" target="_blank"><b>LoopMIDI</b></a> 
+            for virtual ports and <a href="https://edharmasiri.github.io/hairless-midiserial-with-minimize-to-tray/" target="_blank"><b>Hairless MIDI</b></a> to send signals. 
+            DAW: <b>Cubase 12</b>.
         </p>
 
         <!-- Components -->
         <h2>Components</h2>
         <p>
             Arduino Uno board,<br>
-            2x potentiometers, <br>
-            LED + resistor, <br>
-            4 buttons (or more), <br>
-            2x HC-SR04 ultrasonic sensors, <br>
+            2x potentiometers,<br>
+            LED + resistor,<br>
+            4 buttons,<br>
+            2x HC-SR04 sensors,<br>
             LED display,<br>
-            a breadboard.
+            Breadboard.
         </p>
 
         <!-- Code -->
         <h2>Code</h2>
-       <section id="midi-controller">
-
-  <div class="section">
-    <h3>Input handling</h3>
-    <p>
-      The program reads values from potentiometers and ultrasonic sensors. Using the <strong>time-of-flight method</strong>, sensor distances are converted into the corresponding note and volume. Buttons are also monitored, with <strong>debouncing</strong> applied to prevent false triggers and ensure reliable input.
-    </p>
-  </div>
-
-  <div class="section">
-    <h3>State management</h3>
-    <p>
-      It maintains <strong>state variables</strong> for the current note, previous note, active scale, and input mode (potentiometer or theremin). Musical scales are stored in a <strong>LUT</strong>, allowing input values to be quickly mapped to the correct MIDI notes.
-    </p>
-  </div>
-
-  <div class="section">
-    <h3>MIDI output and feedback</h3>
-    <p>
-      When notes change, the system sends <strong>MIDI messages</strong> using <strong>note-on (0x90)</strong> and <strong>note-off (0x80)</strong> commands. The LED lights up as a visual indicator when recording is active.
-    </p>
-  </div>
-
-  <div class="section">
-    <h3>Timing and loop structure</h3>
-    <p>
-      The main loop runs continuously, but note and sensor readings are updated at controlled intervals to avoid unnecessary processing and ensure smooth response. Time stamps track the last update for inputs and button presses, which also helps implement debouncing and precise timing for note playback.
-    </p>
-  </div>
-</section>
-
+        <section id="midi-controller">
+            <div class="section">
+                <h3>Input handling</h3>
+                <p>
+                  Reads potentiometers and ultrasonic sensors. Uses <strong>time-of-flight</strong> to map distances to notes/volume. Buttons are debounced.
+                </p>
+            </div>
+            <div class="section">
+                <h3>State management</h3>
+                <p>
+                  Keeps state variables for current/previous note, active scale, input mode. Scales are stored in a <strong>LUT</strong> for fast mapping.
+                </p>
+            </div>
+            <div class="section">
+                <h3>MIDI output & feedback</h3>
+                <p>
+                  Sends <strong>MIDI note-on/off</strong>. LED indicates recording.
+                </p>
+            </div>
+            <div class="section">
+                <h3>Timing & loop</h3>
+                <p>
+                  Main loop updates inputs at intervals for smooth response and debouncing.
+                </p>
+            </div>
+        </section>
 
         <!-- Tags -->
         <div class="tags">
@@ -278,15 +267,16 @@
             <span>Embedded Systems</span>
         </div>
 
+        <!-- Future Improvements -->
         <h2>Future Improvements / Tips</h2>
-<p>
-For future versions of this MIDI theremin, I would using higher-precision sensors. The HC-SR04 sensors used in this project were not very accurate for fine gestures, 
-so better ultrasonic or optical distance sensors could improve responsiveness and playability. 
-</p>
+        <p>
+            Use higher-precision sensors. HC-SR04 sensors were not very accurate for fine gestures. Better ultrasonic or optical sensors improve responsiveness and playability.
+        </p>
     </div>
 </div>
 
 <script>
+    // Sidebar hover (desktop)
     const sidebar = document.getElementById("sidebar");
     const hoverZone = document.getElementById("hover-zone");
 
@@ -297,21 +287,16 @@ so better ultrasonic or optical distance sensors could improve responsiveness an
     sidebar.addEventListener("mouseleave", () => {
         sidebar.classList.add("hidden");
     });
+
+    // Shrink topbar on scroll (mobile)
+    const topbar = document.getElementById('topbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        topbar.classList.add('shrink');
+      } else {
+        topbar.classList.remove('shrink');
+      }
+    });
 </script>
-
-    // Shrink topbar on scroll
-const topbar = document.getElementById('topbar');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 20) {
-    topbar.classList.add('shrink');
-  } else {
-    topbar.classList.remove('shrink');
-  }
-});
-
-    
 </body>
 </html>
-
-
-
