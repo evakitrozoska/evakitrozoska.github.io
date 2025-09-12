@@ -10,61 +10,54 @@
         background-color: #1e1e1e;
         color: #dcdcdc;
         margin: 0;
-        display: flex;
         min-height: 100vh;
         overflow-x: hidden;
     }
 
-    /* Sidebar */
-    .sidebar {
-        width: 250px;
-        background-color: #2a2a2a;
-        padding: 20px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        transition: transform 0.6s ease;
-        z-index: 100;
+    /* Topbar for mobile and desktop */
+    .topbar {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #2a2a2a;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
     }
-
-    .sidebar h2 {
+    .topbar .name {
+        color: #8cff00;
         font-size: 1.8rem;
-        margin-bottom: 5px;
-        color: #8cff00;
+        font-weight: bold;
+        transition: font-size 0.3s ease;
     }
-
-    .back-btn {
-        text-decoration: none;
+    .topbar .back-btn {
+        font-size: 0.95rem;
         color: #8cff00;
+        text-decoration: none;
         background-color: #3a3a3a;
-        padding: 8px 12px;
+        padding: 5px 10px;
         border-radius: 6px;
-        font-size: 0.9rem;
-        text-align: center;
         transition: all 0.3s ease;
     }
-
-    .back-btn:hover {
+    .topbar .back-btn:hover {
         background-color: #8cff00;
         color: #1e1e1e;
     }
 
-    /* Main content */
-    .main {
-        flex-grow: 1;
-        padding: 20px;
-        margin-left: 0;
-        transition: margin-left 0.6s ease;
+    /* Shrink topbar on scroll */
+    .topbar.shrink .name {
+        font-size: 1.3rem;
+    }
+    .topbar.shrink {
+        padding: 5px 15px;
     }
 
-    .project-detail {
-        width: 100%;
-        padding: 0 20px;
-        box-sizing: border-box;
+    /* Main content */
+    .main {
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
     }
 
     .project-detail h1 {
@@ -82,7 +75,8 @@
     .project-detail .project-img,
     .project-detail .project-video {
         width: 100%;
-        height: 300px;
+        height: auto;
+        max-height: 400px;
         background-color: #444;
         border-radius: 8px;
         margin-bottom: 20px;
@@ -110,7 +104,6 @@
         gap: 8px;
         margin: 20px 0;
     }
-
     .tags span {
         background-color: #3a3a3a;
         color: #dcdcdc;
@@ -119,86 +112,30 @@
         font-size: 0.85rem;
     }
 
-    .sidebar.hidden {
-        transform: translateX(-100%);
-    }
-
-    .hover-zone {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 70px;
-        height: 100%;
-        z-index: 99;
-    }
-
-    /* Topbar for mobile */
     @media screen and (max-width: 768px) {
-      .sidebar { display: none; }
-      .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #2a2a2a;
-        padding: 10px 20px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      .topbar .name {
-        color: #8cff00;
-        font-size: 1.4rem;
-        font-weight: bold;
-        transition: font-size 0.3s ease;
-      }
-      .topbar .back-btn {
-        font-size: 0.95rem;
-        color: #8cff00;
-        text-decoration: none;
-        background-color: #3a3a3a;
-        padding: 5px 10px;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-      }
-      .topbar .back-btn:hover {
-        background-color: #8cff00;
-        color: #1e1e1e;
-      }
-
-      .topbar.shrink .name {
-        font-size: 1.1rem;
-      }
-      .topbar.shrink {
-        padding: 5px 15px;
-      }
+        .topbar .name {
+            font-size: 1.5rem;
+        }
     }
 
 </style>
 </head>
 <body>
-<!-- Topbar (mobile) -->
+
+<!-- Topbar -->
 <div class="topbar" id="topbar">
   <span class="name">Eva Kitrozoska</span>
   <a href="index.html" class="back-btn">← Back</a>
 </div>
 
-<!-- Sidebar (desktop) -->
-<div class="sidebar hidden" id="sidebar">
-    <h2>Eva Kitrozoska</h2>
-    <a href="index.html" class="back-btn">← Back to Portfolio</a>
-</div>
-
-<!-- Hover zone -->
-<div class="hover-zone" id="hover-zone"></div>
-
 <!-- Main content -->
-<div class="main" id="main">
+<div class="main">
     <div class="project-detail">
         <h1>MIDI Theremin with Arduino</h1>
 
         <!-- Video -->
         <div class="project-video">
-            <video width="100%" height="300" controls>
+            <video width="100%" controls>
               <source src="videos/ard_video.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
@@ -276,19 +213,7 @@
 </div>
 
 <script>
-    // Sidebar hover (desktop)
-    const sidebar = document.getElementById("sidebar");
-    const hoverZone = document.getElementById("hover-zone");
-
-    hoverZone.addEventListener("mouseenter", () => {
-        sidebar.classList.remove("hidden");
-    });
-
-    sidebar.addEventListener("mouseleave", () => {
-        sidebar.classList.add("hidden");
-    });
-
-    // Shrink topbar on scroll (mobile)
+    // Shrink topbar on scroll
     const topbar = document.getElementById('topbar');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 20) {
