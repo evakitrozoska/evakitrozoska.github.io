@@ -131,6 +131,30 @@
         height: 100%;
         z-index: 99;
     }
+
+    /* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        position: relative; /* no longer fixed */
+        width: 100%;
+        height: auto;
+        transform: none; /* always visible */
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    .sidebar h2 {
+        font-size: 1.5rem;
+    }
+
+    .back-btn {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+}
+    
 </style>
 </head>
 <body>
@@ -248,4 +272,5 @@ so better ultrasonic or optical distance sensors could improve responsiveness an
 
 </body>
 </html>
+
 
