@@ -5,336 +5,254 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Portfolio</title>
 <style>
-    /* Reset */ 
-  
+/* Reset */
 #fade-overlay {
     position: fixed;
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    background-color: #888888; /* neutral mid-grey */
-    pointer-events: none;      /* clicks pass through */
+    background-color: #888888;
+    pointer-events: none;
     opacity: 0;
     transition: opacity 0.5s ease;
     z-index: 9999;
 }
+#fade-overlay.active { opacity: 1; }
 
-#fade-overlay.active {
-    opacity: 1;
-}
- 
 body {
     opacity: 0;
     transition: opacity 0.5s ease;
 }
+body.loaded { opacity: 1; }
 
-body.loaded {
-    opacity: 1;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-  
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+body {
+    font-family: monospace;
+    background-color: #1e1e1e;
+    color: #dcdcdc;
+    display: flex;
+    min-height: 100vh;
+}
 
-    body {
-        font-family: monospace;
-        background-color: #1e1e1e; /* Dark grey */
-        color: #dcdcdc;
-        display: flex;
-        min-height: 100vh;
-    }
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #2a2a2a;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
 
-    /* Sidebar */
-    .sidebar {
-        width: 250px;
-        background-color: #2a2a2a;
-         padding: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        overflow-y: auto;
-    }
+.sidebar h2 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    color: #8cff00;
+}
 
-    .sidebar h2 {
-        font-size: 1.8rem;
-        margin-bottom: 5px;
-        color: #8cff00; /* Neon green for name */
-    }
+.sidebar p {
+    font-size: 0.9rem;
+    color: #bbbbbb;
+}
 
-    .sidebar p {
-        text-decoration : none;
-        font-size: 0.9rem;
-        color: #bbbbbb;
-    }
-
-    /* Project categories */
+/* Project categories */
 .categories {
     display: flex;
-    flex-direction: column; /* stack vertically */
+    flex-direction: column;
     gap: 8px;
     margin-top: 10px;
-    align-items: flex-start; /* left-align buttons */
+    align-items: flex-start;
 }
-
 .categories button {
     background-color: #3a3a3a;
     border: none;
     color: #dcdcdc;
-    padding: 6px 10px; /* size based on text */
+    padding: 6px 10px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.8rem;
     font-family: monospace;
     transition: background-color 0.2s;
-    text-align: left; /* align text inside button to left */
-    width: fit-content; /* button width = text width + padding */
+    text-align: left;
+    width: fit-content;
 }
-
 .categories button:hover {
     background-color: #505050;
 }
 
-    /* Main content */
-    .main {
-        flex-grow: 1;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Navbar / Windows */
-    .navbar {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .navbar a {
-        text-decoration: none;
-        color: #dcdcdc;
-        background-color: #3a3a3a;
-        padding: 8px 15px;
-        border-radius: 6px;
-        transition: background-color 0.2s;
-        font-size: 0.95rem;
-    }
-
-    .navbar a:hover {
-        background-color: #505050;
-    }
-
-    /* Scrollable project showcase */
-.project-item a {
-    display: block;           /* makes the entire area clickable */
-    text-decoration: none;    /* removes underline */
-    color: inherit;           /* keeps the text color */
-     text-decoration: none;    /* removes underline if any */
+/* Main content */
+.main {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
+/* Navbar */
+.navbar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.navbar a {
+    text-decoration: none;
+    color: #dcdcdc;
+    background-color: #3a3a3a;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    font-size: 0.95rem;
+}
+.navbar a:hover {
+    background-color: #505050;
+    color: #8cff00;
+}
+
+/* Projects */
+.project-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.project-item { width: 100%; }
+.project-item a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
 .project-img {
-    width: 100%;       /* fill the container */
-    max-width: 1200px; /* optional: limits image width on very large screens */
-    height: 300px;       /* preserves aspect ratio */
+    width: 100%;
+    max-width: 1200px;
+    height: 300px;
     background-color: #555;
     border-radius: 5px;
     transition: all 0.3s ease;
 }
-
+.project-img:hover {
+    filter: brightness(1.1) sepia(1) hue-rotate(45deg) saturate(1);
+    cursor: pointer;
+}
 .project-text {
     color: #dcdcdc;
     font-size: 1.3rem;
     font-weight: bold;
-    text-align: left;
     margin-top: 9px;
-    margin-bottom: 0px;
-}
-.project-img:hover {
-    filter: brightness(1.1) sepia(1) hue-rotate(45deg) saturate(1); /*saturate 0?*/
-    cursor: pointer;
 }
 
-  @media (max-width: 768px) {
-        .sidebar {
-            width: 200px;
-.sidebar .categories {
-    flex-direction: row;   /* arrange buttons side by side */
-    flex-wrap: nowrap;     /* keep in one row, scroll if needed */
-    overflow-x: auto;      /* allow horizontal scrolling */
-    gap: 10px;             /* spacing between buttons */
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar { width: 200px; }
 }
-
-.sidebar .categories button {
-    flex: 0 0 auto;        /* buttons don’t shrink, keep width */
-}
-        }
+@media (max-width: 480px) {
+    body { flex-direction: column; }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
     }
-
-    @media (max-width: 480px) {
-        body {
-            flex-direction: column;
-        }
-        .sidebar {
-            width: 100%;
-            height: auto;
-            position: relative;
-        }
-        .main {
-            max-height: none;
-        }
-
+    .main { max-height: none; }
+}
 </style>
 </head>
-  
-<body>
 
+<body>
 <div id="fade-overlay"></div>
 
 <!-- Sidebar -->
 <div class="sidebar">
     <h2>Eva Kitrozoska</h2>
     <p>Electronics, simulations, digital circuits, embedded systems, interactive devices and more.</p>
-
-    <!-- Project Categories -->
     <div class="categories">
-    <button class="category-btn" data-category="MIDI">MIDI</button>
-    <button class="category-btn" data-category="Electronics">Electronics</button>
-    <button class="category-btn" data-category="Arduino">Arduino</button>
-    <button class="category-btn" data-category="MATLAB">MATLAB</button>
-    <button class="category-btn" data-category="C / Cpp">C / Cpp</button>
-    <button class="category-btn" data-category="VHDL">VHDL</button>
-    <button class="category-btn" data-category="Digital Circuits">Digital Circuits</button>
-
-
+        <button class="category-btn" data-category="MIDI">MIDI</button>
+        <button class="category-btn" data-category="Electronics">Electronics</button>
+        <button class="category-btn" data-category="Arduino">Arduino</button>
+        <button class="category-btn" data-category="MATLAB">MATLAB</button>
+        <button class="category-btn" data-category="C / Cpp">C / Cpp</button>
+        <button class="category-btn" data-category="VHDL">VHDL</button>
+        <button class="category-btn" data-category="Digital Circuits">Digital Circuits</button>
+    </div>
 </div>
 
-
- 
-</div>
-
-<!-- Main content -->
+<!-- Main -->
 <div class="main">
-    <!-- Navbar / Windows -->
     <div class="navbar">
         <a href="#">Home</a>
         <a href="visual.html">Visual Projects</a>
     </div>
 
-<div class="project-showcase">
-    <div class="project-item" data-category="Arduino,MIDI,C / Cpp">
-    <div class="project-text">MIDI Theremin with Arduino</div>
-    <a href="ard.html">
-        <div class="project-img"></div>
-    </a>
+    <div class="project-showcase">
+        <div class="project-item" data-category="Arduino,MIDI,C / Cpp">
+            <div class="project-text">MIDI Theremin with Arduino</div>
+            <a href="ard.html"><div class="project-img"></div></a>
+        </div>
+        <div class="project-item" data-category="MATLAB">
+            <div class="project-text">Oscilloscope Simulation in MATLAB</div>
+            <a href="project2.html"><div class="project-img"></div></a>
+        </div>
+        <div class="project-item" data-category="VHDL">
+            <div class="project-text">VHDL signal generator</div>
+            <a href="ard.html"><div class="project-img"></div></a>
+        </div>
+        <div class="project-item" data-category="MIDI">
+            <div class="project-text">A repurposed XP-pen</div>
+            <a href="project2.html"><div class="project-img"></div></a>
+        </div>
+    </div>
 </div>
-
-<div class="project-item" data-category="MATLAB">
-    <div class="project-text">Oscilloscope Simulation in MATLAB</div>
-    <a href="project2.html">
-        <div class="project-img"></div>
-    </a>
-</div>
-    <div class="project-item" data-category="VHDL">
-    <div class="project-text">VHDL signal generator</div>
-    <a href="ard.html">
-        <div class="project-img"></div>
-    </a>
-</div>
-
-<div class="project-item" data-category="MIDI">
-    <div class="project-text">A repurposed XP-pen</div>
-    <a href="project2.html">
-        <div class="project-img"></div>
-    </a>
-</div>
-
-</div>
-
-</div>
-<script>
-  // Fade in on page load
-  window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-      document.body.classList.add('loaded');
-    }, 10); // 10ms delay ensures browser renders opacity 0 first
-  });
-
-  // Fade out before navigating to another page
-  document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
-        e.preventDefault();
-        document.body.classList.remove('loaded'); // start fade-out
-        setTimeout(() => {
-          window.location.href = href;
-        }, 500); // matches CSS transition
-      }
-    });
-  });
-</script>
-<script>
-  // Fade overlay in on link click
-  document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
-        e.preventDefault();
-        document.getElementById('fade-overlay').classList.add('active');
-        setTimeout(() => {
-          window.location.href = href;
-        }, 500); // match CSS transition duration
-      }
-    });
-  });
-
-  // Fade overlay out on page load
-  window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-      document.getElementById('fade-overlay').classList.remove('active');
-    }, 10); // short delay so browser renders initial opacity
-  });
-</script>
-
 
 <script>
-  const selectedCategories = new Set(); // store selected categories
-
-  const buttons = document.querySelectorAll('.category-btn');
-
-  function filterProjects() {
-    const projects = document.querySelectorAll(".project-item");
-    projects.forEach(project => {
-      const categories = project.dataset.category.split(',').map(c => c.trim());
-      // show project if it matches any selected category or show all if none selected
-      const show = selectedCategories.size === 0 || categories.some(c => selectedCategories.has(c));
-      project.style.display = show ? "block" : "none";
-    });
-  }
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const category = btn.dataset.category;
-      if (selectedCategories.has(category)) {
-        selectedCategories.delete(category);   // deselect
-        btn.style.backgroundColor = "#3a3a3a"; // reset color
-      } else {
-        selectedCategories.add(category);      // select
-        btn.style.backgroundColor = "#505050"; // indicate selection
-      }
-      filterProjects();
-    });
+// Fade in/out
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => { document.body.classList.add('loaded'); }, 10);
+  setTimeout(() => { document.getElementById('fade-overlay').classList.remove('active'); }, 10);
+});
+document.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', e => {
+    const href = link.getAttribute('href');
+    if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
+      e.preventDefault();
+      document.getElementById('fade-overlay').classList.add('active');
+      document.body.classList.remove('loaded');
+      setTimeout(() => { window.location.href = href; }, 500);
+    }
   });
+});
 
-  // initial load: show all
-  filterProjects();
+// Category filtering
+const selectedCategories = new Set();
+const buttons = document.querySelectorAll('.category-btn');
+function filterProjects() {
+  const projects = document.querySelectorAll(".project-item");
+  projects.forEach(project => {
+    const categories = project.dataset.category.split(',').map(c => c.trim());
+    const show = selectedCategories.size === 0 || categories.some(c => selectedCategories.has(c));
+    project.style.display = show ? "block" : "none";
+  });
+}
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const category = btn.dataset.category;
+    if (selectedCategories.has(category)) {
+      selectedCategories.delete(category);
+      btn.style.backgroundColor = "#3a3a3a";
+    } else {
+      selectedCategories.add(category);
+      btn.style.backgroundColor = "#505050";
+    }
+    filterProjects();
+  });
+});
+filterProjects();
 </script>
-
-  
 </body>
 </html>
