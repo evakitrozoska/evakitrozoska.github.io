@@ -1,291 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Portrait Gallery</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Gallery</title>
 <style>
-  /* --- Fade overlay used for page transitions --- */
-  #fade-overlay {
+/* Fade overlay */
+#fade-overlay {
     position: fixed;
-    inset: 0;
-    background: #888;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #888888;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.45s ease;
-    z-index: 9998;
-  }
-  #fade-overlay.active { opacity: 1; pointer-events: auto; }
+    transition: opacity 0.5s ease;
+    z-index: 9999;
+}
+#fade-overlay.active { opacity: 1; }
 
-  /* --- Basic body fade-in/out --- */
-  html,body { height: 100%; }
-  body {
-    margin: 0;
-    font-family: monospace;
-    background: #f5f5f5;
-    color: #222;
-    overflow-y: auto;
-    -webkit-font-smoothing:antialiased;
+/* Body fade */
+body {
     opacity: 0;
-    transition: opacity 0.45s ease;
-  }
-  body.loaded { opacity: 1; }
+    transition: opacity 0.5s ease;
+    font-family: monospace;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    min-height: 100vh;
+}
+body.loaded { opacity: 1; }
 
-  /* --- Top bar --- */
-  .topbar{
+/* Topbar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e0e0e0;
+    padding: 10px 20px;
     position: sticky;
     top: 0;
-    z-index: 50;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 18px;
-    background:#e0e0e0;
-    transition:padding .25s ease;
-  }
-  .topbar .title { color:#444; font-size:1.2rem; font-weight:700; }
-  .topbar .back {
-    text-decoration:none;
-    background:#dcdcdc;
-    color:#333;
-    padding:7px 12px;
-    border-radius:6px;
-  }
-  .topbar .back:hover { background:#505050; color:#8cff00; }
+    z-index: 100;
+    transition: padding 0.3s ease;
+}
+.topbar .name { color: #444; font-size: 1.8rem; font-weight: bold; transition: font-size 0.3s ease; }
+.topbar .back-btn {
+    font-size: 0.95rem; color: #333; text-decoration: none;
+    background-color: #dcdcdc; padding: 6px 12px; border-radius: 6px;
+    transition: all 0.3s ease;
+}
+.topbar .back-btn:hover { background-color: #505050; color: #8cff00; }
+.topbar.shrink .name { font-size: 1.3rem; }
+.topbar.shrink { padding: 5px 15px; }
 
-  .wrap { padding:18px; max-width:1400px; margin:0 auto; box-sizing:border-box; }
+/* Main content */
+.main { padding: 20px; max-width: 1200px; margin: 0 auto; }
 
-  /* --- Gallery layout ---
-       Mobile: single column, full-width images
-       Desktop: two columns, equal-height cropped previews (2x2 rows)
-  --- */
-  .gallery {
+/* Gallery layout */
+.gallery {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
+    grid-template-columns: 1fr; /* mobile: one image per row */
+    gap: 20px;
+}
 
-  .item {
+/* Image items */
+.item {
     width: 100%;
     overflow: hidden;
-    border-radius: 10px;
     background: #ddd;
-    display:block;
-  }
+}
 
-  .item img {
-    display:block;
-    width:100%;
-    height:auto;            /* mobile: natural height */
+.item img {
+    display: block;
+    width: 100%;
+    height: 300px; /* fixed height */
     object-fit: cover;
-    transition: transform .35s ease, filter .25s ease;
+    transition: transform 0.35s ease, filter 0.25s ease;
     transform-origin: center;
-    cursor: zoom-in;        /* mobile shows zoom cursor */
-    will-change: transform;
-  }
-  .item img:hover { transform: scale(1.03); filter:brightness(1.03); }
+    cursor: zoom-in;
+    border-radius: 8px;
+}
 
-  /* Desktop: two columns + fixed preview height + disable open cursor */
-  @media (min-width: 820px) {
+.item img:hover {
+    transform: scale(1.03);
+    filter: brightness(1.05);
+}
+
+/* Desktop layout: two per row, fixed height, sharp edges */
+@media (min-width: 820px) {
     .gallery {
-      grid-template-columns: repeat(2, 1fr); /* exactly two per row */
-      gap: 20px;
-    }
-    .item {
-      height: clamp(360px, 38vh, 480px); /* equal preview height */
+        grid-template-columns: repeat(2, 1fr);
     }
     .item img {
-      width:100%;
-      height:100%;
-      object-fit: cover; /* crop to fragment */
-      cursor: default;   /* clicking disabled on desktop */
+        height: 380px; /* same height for both */
+        border-radius: 0; /* sharp edges */
     }
-    .item img:hover { transform: scale(1.02); } /* subtle hover visual only */
-  }
+}
 
-  /* --- Modal / lightbox (still present but only triggered on mobile) --- */
-  .modal {
+/* Modal styles */
+#modal {
+    display: none;
     position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.85);
     justify-content: center;
-    z-index: 9999;
-    pointer-events: none;
-  }
-  .modal .backdrop {
-    position:absolute;
-    inset:0;
-    background: rgba(20,20,20,.65);
-    opacity:0;
-    transition: opacity .35s ease;
-  }
-  .modal .panel {
-    position:relative;
-    max-width: min(95vw, 1200px);
-    max-height: 92vh;
-    transform: scale(.95);
-    opacity: 0;
-    transition: transform .35s cubic-bezier(.2,.9,.2,1), opacity .35s ease;
-    pointer-events: auto;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #f5f5f5;
-    box-shadow: 0 18px 40px rgba(0,0,0,.35);
-    display:flex;
-  }
-  .modal img {
-    width:100%;
-    height:100%;
-    object-fit: contain;
-    background: #111;
-  }
-  .modal.show .backdrop { opacity: 1; }
-  .modal.show .panel { opacity:1; transform: scale(1); }
-
-  .close-btn {
-    position:absolute;
-    right:10px;
-    top:10px;
-    z-index:5;
-    background: rgba(255,255,255,.9);
-    border: none;
-    border-radius:6px;
-    padding:6px 9px;
-    cursor:pointer;
-    font-weight:700;
-  }
-  .close-btn:hover { background: #fff; color:#000; }
-  @media (max-width:520px) {
-    .topbar .title { font-size:1rem; }
-    .close-btn { right:8px; top:8px; padding:5px 8px; }
-  }
+    align-items: center;
+    z-index: 1000;
+}
+#modal img {
+    max-width: 95%;
+    max-height: 95%;
+    box-shadow: 0 0 20px #000;
+    transition: transform 0.3s ease;
+    cursor: zoom-out;
+}
 </style>
 </head>
 <body>
 
 <div id="fade-overlay"></div>
 
-<header class="topbar">
-  <div class="title">Project Gallery</div>
-  <a class="back" href="visual.html">← Back</a>
-</header>
+<!-- Topbar -->
+<div class="topbar" id="topbar">
+    <span class="name">Project Gallery</span>
+    <a href="visual.html" class="back-btn">← Back</a>
+</div>
 
-<main class="wrap">
-  <section class="gallery" id="gallery">
-    <!-- Replace these src/data-full with your raw.githubusercontent links or relative paths -->
-    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8525.png">
-      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8525.png" alt="Portrait 1">
-    </a>
+<!-- Main content -->
+<div class="main">
+    <div class="gallery">
+        <div class="item"><img src="images/IMG_8525.png" alt="Portrait 1" data-full="images/IMG_8525.png"></div>
+        <div class="item"><img src="images/IMG_8532.png" alt="Portrait 2" data-full="images/IMG_8532.png"></div>
+        <div class="item"><img src="images/IMG_8536.png" alt="Portrait 3" data-full="images/IMG_8536.png"></div>
+        <div class="item"><img src="images/IMG_8539.png" alt="Portrait 4" data-full="images/IMG_8539.png"></div>
+    </div>
+</div>
 
-    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8532.png">
-      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8532.png" alt="Portrait 2">
-    </a>
-
-    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8536.png">
-      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8536.png" alt="Portrait 3">
-    </a>
-
-    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8539.png">
-      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8539.png" alt="Portrait 4">
-    </a>
-  </section>
-</main>
-
-<!-- Modal container (hidden until an image is opened on mobile) -->
-<div class="modal" id="modal" aria-hidden="true" role="dialog">
-  <div class="backdrop" id="modal-backdrop"></div>
-  <div class="panel" role="document">
-    <button class="close-btn" id="modal-close" aria-label="Close (Esc)">✕</button>
-    <img id="modal-img" src="" alt="">
-  </div>
+<!-- Modal -->
+<div id="modal">
+    <img src="" alt="">
 </div>
 
 <script>
-/* page fade-in */
-window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(()=> document.body.classList.add('loaded'), 10);
-  document.getElementById('fade-overlay').classList.remove('active');
-});
-
-/* shrink topbar on scroll */
+// Shrink topbar
+const topbar = document.getElementById('topbar');
 window.addEventListener('scroll', () => {
-  const top = document.querySelector('.topbar');
-  if (window.scrollY > 18) top.style.padding = '6px 14px';
-  else top.style.padding = '';
+    if(window.scrollY > 20) topbar.classList.add('shrink');
+    else topbar.classList.remove('shrink');
 });
 
-/* Lightbox logic (ONLY open on small screens) */
-const gallery = document.getElementById('gallery');
+// Fade-in
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(()=>{
+        document.body.classList.add('loaded');
+        document.getElementById('fade-overlay').classList.remove('active');
+    }, 10);
+});
+
+// Fade-out on link click
+document.querySelectorAll('a').forEach(link=>{
+    link.addEventListener('click', function(e){
+        const href = this.getAttribute('href');
+        if(href && !href.startsWith('#') && !href.startsWith('javascript:')){
+            e.preventDefault();
+            document.body.classList.remove('loaded');
+            document.getElementById('fade-overlay').classList.add('active');
+            setTimeout(()=>{ window.location.href = href; },500);
+        }
+    });
+});
+
+// Modal/lightbox
 const modal = document.getElementById('modal');
-const modalImg = document.getElementById('modal-img');
-const modalClose = document.getElementById('modal-close');
-const modalBackdrop = document.getElementById('modal-backdrop');
-
-function isMobileView() {
-  return window.innerWidth < 820; // same breakpoint as CSS
-}
-
-function openModal(src, alt) {
-  modalImg.src = src;
-  modalImg.alt = alt || '';
-  modal.classList.add('show');
-  modal.setAttribute('aria-hidden', 'false');
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
-  modalClose.focus();
-}
-
-function closeModal() {
-  modal.classList.remove('show');
-  modal.setAttribute('aria-hidden', 'true');
-  document.documentElement.style.overflow = '';
-  document.body.style.overflow = '';
-  setTimeout(()=> modalImg.src = '', 350);
-}
-
-/* gallery click: only open modal on mobile; on desktop do nothing */
-gallery.addEventListener('click', (e) => {
-  const a = e.target.closest('.item');
-  if (!a) return;
-  // if desktop, prevent any interaction (do nothing)
-  if (!isMobileView()) {
-    e.preventDefault();
-    return;
-  }
-  // mobile: open modal
-  e.preventDefault();
-  const full = a.getAttribute('data-full') || a.querySelector('img').src;
-  const alt = a.querySelector('img').alt || '';
-  openModal(full, alt);
+const modalImg = modal.querySelector('img');
+document.querySelectorAll('.item img').forEach(img=>{
+    img.addEventListener('click', e=>{
+        modal.style.display = 'flex';
+        modalImg.src = img.dataset.full || img.src;
+        modalImg.alt = img.alt;
+    });
 });
-
-/* close handlers */
-modalClose.addEventListener('click', closeModal);
-modalBackdrop.addEventListener('click', closeModal);
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
-});
-
-/* clicking site links should trigger fade-out transition (keeps behavior consistent) */
-document.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', function(ev) {
-    const href = this.getAttribute('href');
-    // ignore gallery anchor placeholders (href="#") and item anchors handled above
-    if (!href || href === '#' || href.startsWith('javascript:')) return;
-    if (this.classList.contains('item')) return;
-    ev.preventDefault();
-    document.body.classList.remove('loaded');
-    document.getElementById('fade-overlay').classList.add('active');
-    setTimeout(()=> { window.location.href = href; }, 480);
-  });
-});
-
-/* optional: if user resizes from desktop -> mobile, keep behavior consistent */
-window.addEventListener('resize', () => {
-  // close modal if switching to desktop view
-  if (!isMobileView() && modal.classList.contains('show')) closeModal();
+modal.addEventListener('click', e=>{
+    modal.style.display = 'none';
+    modalImg.src = '';
 });
 </script>
+
 </body>
 </html>
