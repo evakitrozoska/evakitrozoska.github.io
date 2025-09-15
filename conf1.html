@@ -1,130 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gallery</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Portrait Gallery</title>
 <style>
-/* Fade overlay */
-#fade-overlay {
+  /* --- Fade overlay used for page transitions --- */
+  #fade-overlay {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #888888;
+    inset: 0;
+    background: #888;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 9999;
-}
-#fade-overlay.active { opacity: 1; }
+    transition: opacity 0.45s ease;
+    z-index: 9998;
+  }
+  #fade-overlay.active { opacity: 1; pointer-events: auto; }
 
-/* Body fade */
-body {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    font-family: monospace;
-    background-color: #f5f5f5;
-    color: #333;
+  /* --- Basic body fade-in/out --- */
+  html,body { height: 100%; }
+  body {
     margin: 0;
-    min-height: 100vh;
-}
-body.loaded { opacity: 1; }
+    font-family: monospace;
+    background: #f5f5f5;
+    color: #222;
+    overflow-y: auto;
+    -webkit-font-smoothing:antialiased;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  body.loaded { opacity: 1; }
 
-/* Topbar */
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #e0e0e0;
-    padding: 10px 20px;
+  /* --- Top bar (keeps visual aesthetic consistent) --- */
+  .topbar{
     position: sticky;
     top: 0;
-    z-index: 100;
-    transition: padding 0.3s ease;
-}
-.topbar .name { color: #444; font-size: 1.8rem; font-weight: bold; transition: font-size 0.3s ease; }
-.topbar .back-btn {
-    font-size: 0.95rem; color: #333; text-decoration: none;
-    background-color: #dcdcdc; padding: 6px 12px; border-radius: 6px;
-    transition: all 0.3s ease;
-}
-.topbar .back-btn:hover { background-color: #505050; color: #8cff00; }
-.topbar.shrink .name { font-size: 1.3rem; }
-.topbar.shrink { padding: 5px 15px; }
+    z-index: 50;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 18px;
+    background:#e0e0e0;
+    transition:padding .25s ease;
+  }
+  .topbar .title { color:#444; font-size:1.2rem; font-weight:700; }
+  .topbar .back {
+    text-decoration:none;
+    background:#dcdcdc;
+    color:#333;
+    padding:7px 12px;
+    border-radius:6px;
+  }
+  .topbar .back:hover { background:#505050; color:#8cff00; }
 
-/* Main content */
-.main { padding: 20px; max-width: 1200px; margin: 0 auto; }
+  /* --- container --- */
+  .wrap { padding:18px; max-width:1400px; margin:0 auto; box-sizing:border-box; }
 
-/* Full-width vertical gallery */
-.gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-.gallery img {
+  /* --- Gallery layout:
+       - Mobile: single column, full-width images (no cropping)
+       - Desktop: grid where each item is a fixed-height cropped window showing a fragment
+  --- */
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .item {
     width: 100%;
-    height: auto;
-    border-radius: 8px;
-    transition: transform 0.3s ease, filter 0.3s ease;
-}
-.gallery img:hover {
-    transform: scale(1.02);
-    filter: brightness(1.05);
-    cursor: pointer;
-}
-@media (max-width: 768px) { .topbar .name { font-size: 1.5rem; } }
+    overflow: hidden;
+    border-radius: 10px;
+    background: #ddd;
+    display:block;
+  }
+
+  .item img {
+    display:block;
+    width:100%;
+    height:auto;             /* mobile: natural height */
+    object-fit: cover;
+    transition: transform .35s ease, filter .25s ease;
+    transform-origin: center;
+    cursor: zoom-in;
+    will-change: transform;
+  }
+  .item img:hover { transform: scale(1.03); filter:brightness(1.03); }
+
+  /* --- Desktop / larger screens: multiple columns, fixed-height cropped previews --- */
+  @media (min-width: 820px) {
+    .gallery {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .item {
+      height: clamp(320px, 35vh, 420px); /* fixed preview window */
+    }
+    .item img {
+      width:100%;
+      height:100%;
+      object-fit: cover; /* crop to show a fragment (eyes, etc.) */
+    }
+  }
+
+  /* --- Modal / lightbox --- */
+  .modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  .modal .backdrop {
+    position:absolute;
+    inset:0;
+    background: rgba(20,20,20,.65);
+    opacity:0;
+    transition: opacity .35s ease;
+  }
+  .modal .panel {
+    position:relative;
+    max-width: min(95vw, 1200px);
+    max-height: 92vh;
+    transform: scale(.95);
+    opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.9,.2,1), opacity .35s ease;
+    pointer-events: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f5f5f5;
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    display:flex;
+  }
+  .modal img {
+    width:100%;
+    height:100%;
+    object-fit: contain;
+    background: #111;
+  }
+  .modal.show .backdrop { opacity: 1; }
+  .modal.show .panel { opacity:1; transform: scale(1); }
+
+  /* --- Close button --- */
+  .close-btn {
+    position:absolute;
+    right:10px;
+    top:10px;
+    z-index:5;
+    background: rgba(255,255,255,.9);
+    border: none;
+    border-radius:6px;
+    padding:6px 9px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .close-btn:hover { background: #fff; color:#000; }
+
+  /* Small screens tweaks */
+  @media (max-width:520px) {
+    .topbar .title { font-size:1rem; }
+    .close-btn { right:8px; top:8px; padding:5px 8px; }
+  }
 </style>
 </head>
 <body>
 
 <div id="fade-overlay"></div>
 
-<!-- Topbar -->
-<div class="topbar" id="topbar">
-    <span class="name">Project Gallery</span>
-    <a href="visual.html" class="back-btn">← Back</a>
-</div>
+<header class="topbar">
+  <div class="title">Project Gallery</div>
+  <a class="back" href="visual.html">← Back</a>
+</header>
 
-<!-- Main content -->
-<div class="main">
-    <div class="gallery">
-        <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8525.png" alt="Portrait 1">
-        <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8532.png" alt="Portrait 2">
-        <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8536.png" alt="Portrait 3">
-        <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8539.png" alt="Portrait 4">
-    </div>
+<main class="wrap">
+  <section class="gallery" id="gallery">
+    <!-- Replace these src URLs with your raw.githubusercontent links or relative paths -->
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8525.png">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8525.png" alt="Portrait 1">
+    </a>
+
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8532.png">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8532.png" alt="Portrait 2">
+    </a>
+
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8536.png">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8536.png" alt="Portrait 3">
+    </a>
+
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8539.png">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8539.png" alt="Portrait 4">
+    </a>
+
+    <!-- Add more items by duplicating an <a class="item" ...> block and changing data-full/src -->
+  </section>
+</main>
+
+<!-- Modal container (hidden until an image is opened) -->
+<div class="modal" id="modal" aria-hidden="true" role="dialog">
+  <div class="backdrop" id="modal-backdrop"></div>
+  <div class="panel" role="document">
+    <button class="close-btn" id="modal-close" aria-label="Close (Esc)">✕</button>
+    <img id="modal-img" src="" alt="">
+  </div>
 </div>
 
 <script>
-// Shrink topbar on scroll
-const topbar = document.getElementById('topbar');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) topbar.classList.add('shrink');
-    else topbar.classList.remove('shrink');
-});
-
-// Fade-in
+/* basic page fade-in */
 window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.body.classList.add('loaded');
-        document.getElementById('fade-overlay').classList.remove('active');
-    }, 10);
+  setTimeout(()=> document.body.classList.add('loaded'), 10);
+  // ensure fade-overlay starts hidden
+  document.getElementById('fade-overlay').classList.remove('active');
 });
 
-// Fade-out on link click
+/* shrink topbar on scroll (keeps visual consistency) */
+window.addEventListener('scroll', () => {
+  const top = document.querySelector('.topbar');
+  if (window.scrollY > 18) top.style.padding = '6px 14px';
+  else top.style.padding = '';
+});
+
+/* Lightbox logic */
+const gallery = document.getElementById('gallery');
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
+const modalClose = document.getElementById('modal-close');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openModal(src, alt) {
+  modalImg.src = src;
+  modalImg.alt = alt || '';
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  // lock scroll
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+  // focus for accessibility
+  modalClose.focus();
+}
+
+function closeModal() {
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  // restore scroll
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
+  // remove src after animation to free memory
+  setTimeout(()=> modalImg.src = '', 350);
+}
+
+/* open when clicking an item */
+gallery.addEventListener('click', (e) => {
+  const a = e.target.closest('.item');
+  if (!a) return;
+  e.preventDefault();
+  const full = a.getAttribute('data-full') || a.querySelector('img').src;
+  const alt = a.querySelector('img').alt || '';
+  openModal(full, alt);
+});
+
+/* close handlers */
+modalClose.addEventListener('click', closeModal);
+modalBackdrop.addEventListener('click', closeModal);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+});
+
+/* clicking site links should trigger fade-out transition similar to your other pages */
 document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', function(e){
-        const href = this.getAttribute('href');
-        if(href && !href.startsWith('#') && !href.startsWith('javascript:')){
-            e.preventDefault();
-            document.body.classList.remove('loaded');
-            document.getElementById('fade-overlay').classList.add('active');
-            setTimeout(()=>{ window.location.href = href; },500);
-        }
-    });
+  link.addEventListener('click', function(ev) {
+    const href = this.getAttribute('href');
+    // allow modal/anchor internal controls to function
+    if (!href || href === '#' || href.startsWith('javascript:')) return;
+    // if user clicked gallery item anchor we already handled it
+    if (this.classList.contains('item')) return;
+    ev.preventDefault();
+    document.body.classList.remove('loaded');
+    document.getElementById('fade-overlay').classList.add('active');
+    setTimeout(()=> { window.location.href = href; }, 480);
+  });
 });
 </script>
-
 </body>
 </html>
