@@ -56,15 +56,15 @@ body.loaded { opacity: 1; }
 /* Main content */
 .main { padding: 20px; max-width: 1200px; margin: 0 auto; }
 
-/* Masonry-like vertical gallery */
+/* Full-width vertical gallery */
 .gallery {
-    column-count: 1;
-    column-gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .gallery img {
     width: 100%;
-    display: block;
-    margin-bottom: 20px;
+    height: auto;
     border-radius: 8px;
     transition: transform 0.3s ease, filter 0.3s ease;
 }
@@ -73,11 +73,6 @@ body.loaded { opacity: 1; }
     filter: brightness(1.05);
     cursor: pointer;
 }
-
-/* Responsive: adjust column count for larger screens */
-@media (min-width: 600px) { .gallery { column-count: 2; } }
-@media (min-width: 900px) { .gallery { column-count: 3; } }
-
 @media (max-width: 768px) { .topbar .name { font-size: 1.5rem; } }
 </style>
 </head>
@@ -94,10 +89,10 @@ body.loaded { opacity: 1; }
 <!-- Main content -->
 <div class="main">
     <div class="gallery">
-        <img src="images/IMG_8525.png" alt="Portrait 1">
-        <img src="images/IMG_8532.png" alt="Portrait 2">
-        <img src="images/IMG_8536.png" alt="Portrait 3">
-        <img src="images/IMG_8539.png" alt="Portrait 4">
+        <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8525.png" alt="Portrait 1">
+        <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8532.png" alt="Portrait 2">
+        <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8536.png" alt="Portrait 3">
+        <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8539.png" alt="Portrait 4">
     </div>
 </div>
 
@@ -133,5 +128,3 @@ document.querySelectorAll('a').forEach(link => {
 
 </body>
 </html>
-
-
