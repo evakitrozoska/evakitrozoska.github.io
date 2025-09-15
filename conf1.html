@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDI Theremin Gallery</title>
+<style>
+/* Fade overlay */
+#fade-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #888888;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 9999;
+}
+#fade-overlay.active { opacity: 1; }
+
+/* Body fade */
+body {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    font-family: monospace;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    min-height: 100vh;
+}
+body.loaded { opacity: 1; }
+
+/* Topbar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e0e0e0;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: padding 0.3s ease;
+}
+.topbar .name { color: #444; font-size: 1.8rem; font-weight: bold; transition: font-size 0.3s ease; }
+.topbar .back-btn {
+    font-size: 0.95rem; color: #333; text-decoration: none;
+    background-color: #dcdcdc; padding: 6px 12px; border-radius: 6px;
+    transition: all 0.3s ease;
+}
+.topbar .back-btn:hover { background-color: #505050; color: #8cff00; }
+.topbar.shrink .name { font-size: 1.3rem; }
+.topbar.shrink { padding: 5px 15px; }
+
+/* Main content */
+.main { padding: 20px; max-width: 1200px; margin: 0 auto; }
+
+/* Masonry-like vertical gallery */
+.gallery {
+    column-count: 1;
+    column-gap: 20px;
+}
+.gallery img {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+.gallery img:hover {
+    transform: scale(1.02);
+    filter: brightness(1.05);
+    cursor: pointer;
+}
+
+/* Responsive: adjust column count for larger screens */
+@media (min-width: 600px) { .gallery { column-count: 2; } }
+@media (min-width: 900px) { .gallery { column-count: 3; } }
+
+@media (max-width: 768px) { .topbar .name { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+
+<div id="fade-overlay"></div>
+
+<!-- Topbar -->
+<div class="topbar" id="topbar">
+    <span class="name">Project Gallery</span>
+    <a href="visual.html" class="back-btn">← Back</a>
+</div>
+
+<!-- Main content -->
+<div class="main">
+    <div class="gallery">
+        <img src="images/portrait1.jpg" alt="Portrait 1">
+        <img src="images/portrait2.jpg" alt="Portrait 2">
+        <img src="images/portrait3.jpg" alt="Portrait 3">
+        <img src="images/conference1.jpg" alt="Conference 1">
+        <img src="images/conference2.jpg" alt="Conference 2">
+        <img src="images/conference3.jpg" alt="Conference 3">
+        <img src="images/conference4.jpg" alt="Conference 4">
+        <img src="images/portrait4.jpg" alt="Portrait 4">
+    </div>
+</div>
+
+<script>
+// Shrink topbar on scroll
+const topbar = document.getElementById('topbar');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) topbar.classList.add('shrink');
+    else topbar.classList.remove('shrink');
+});
+
+// Fade-in
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        document.body.classList.add('loaded');
+        document.getElementById('fade-overlay').classList.remove('active');
+    }, 10);
+});
+
+// Fade-out on link click
+document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function(e){
+        const href = this.getAttribute('href');
+        if(href && !href.startsWith('#') && !href.startsWith('javascript:')){
+            e.preventDefault();
+            document.body.classList.remove('loaded');
+            document.getElementById('fade-overlay').classList.add('active');
+            setTimeout(()=>{ window.location.href = href; },500);
+        }
+    });
+});
+</script>
+
+</body>
+</html>
