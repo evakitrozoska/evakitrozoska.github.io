@@ -5,140 +5,219 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eva Kitrozoska - Portraits</title>
 <style>
-/* Fade overlay */
-#fade-overlay {
+  /* --- Fade overlay for page transitions --- */
+  #fade-overlay {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #888888;
+    inset: 0;
+    background: #888888;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.45s ease;
     z-index: 9999;
-}
-#fade-overlay.active { opacity: 1; }
+  }
+  #fade-overlay.active { opacity: 1; pointer-events: auto; }
 
-/* Body fade-in/out */
-body { opacity: 0; transition: opacity 0.5s ease; font-family: monospace; background-color: #f5f5f5; color: #333; display: flex; min-height: 100vh; }
-body.loaded { opacity: 1; }
+  body {
+    margin:0;
+    font-family: monospace;
+    background:#f5f5f5;
+    color:#333;
+    display:flex;
+    min-height:100vh;
+    opacity:0;
+    transition: opacity 0.45s ease;
+  }
+  body.loaded { opacity:1; }
 
-/* Reset box-sizing */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  /* --- Sidebar --- */
+  .sidebar {
+    width:250px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    background:#e0e0e0;
+  }
+  .sidebar h2 { font-size:1.8rem; color:#444; margin-bottom:5px; }
+  .sidebar p { font-size:0.9rem; color:#555; }
+  .sidebar a {
+    text-decoration:none;
+    color:#333;
+    padding:8px 18px;
+    display:block;
+    font-size:0.9rem;
+    border-radius:6px;
+    transition:0.3s;
+  }
+  .sidebar a:hover { color:#8cff00; background:#3a3a3a; cursor:pointer; }
 
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-    background-color: #e0e0e0;
-}
-.sidebar h2 { font-size: 1.8rem; margin-bottom: 5px; color: #444; }
-.sidebar p { font-size: 0.9rem; color: #555; margin-bottom: 5px; }
-.sidebar a { text-decoration: none; color: #333; padding: 8px 18px; display: block; font-size: 0.9rem; border-radius: 6px; transition: all 0.3s ease; }
-.sidebar a:hover { color: #8cff00; background-color: #3a3a3a; cursor: pointer; }
+  /* --- Main content --- */
+  .main { flex-grow:1; padding:20px; display:flex; flex-direction:column; overflow-y:auto; }
+  .navbar { display:flex; gap:15px; margin-bottom:20px; }
+  .navbar a {
+    text-decoration:none;
+    color:#3a3a3a;
+    background:#dcdcdc;
+    padding:8px;
+    border-radius:6px;
+    transition:0.2s;
+    font-size:0.95rem;
+  }
+  .navbar a:hover { background:#505050; color:#8cff00; }
 
-/* Main content */
-.main { flex-grow: 1; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
-
-/* Navbar */
-.navbar { display: flex; gap: 15px; margin-bottom: 20px; }
-.navbar a {
-    text-decoration: none; color: #3a3a3a; background-color: #dcdcdc;
-    padding: 8px 8px; border-radius: 6px; transition: all 0.2s ease; font-size: 0.95rem;
-}
-.navbar a:hover { background-color: #505050; color: #8cff00; }
-
-/* Project showcase */
-.project-showcase { display: flex; flex-direction: column; gap: 20px; }
-.project-item { width: 100%; }
-.project-text { font-size: 1.3rem; font-weight: bold; margin-bottom: 8px; }
-.project-item a { display: block; text-decoration: none; color: inherit; }
-.project-img {
-    width: 100%; max-width: 1200px; height: 300px;
-    background-color: #cccccc;
-    border-radius: 5px;
+  .project-showcase { display:flex; flex-direction:column; gap:20px; }
+  .project-item { width:100%; }
+  .project-text { font-size:1.3rem; font-weight:bold; margin-bottom:8px; }
+  .project-item a { display:block; text-decoration:none; color:inherit; }
+  .project-item img {
+    width:100%;
+    max-width:1200px;
+    height:300px;
+    object-fit:cover;
+    border-radius:8px;
     transition: all 0.3s ease;
-    background-size: cover;
-    background-position: center;
-}
-.project-img:hover { filter: brightness(1.05); cursor: pointer; }
+    cursor:zoom-in;
+  }
+  .project-item img:hover { filter:brightness(1.05); }
 
-/* Responsive */
-@media (max-width: 768px) { .sidebar { width: 200px; } }
-@media (max-width: 480px) { body { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } .main { max-height: none; } }
+  /* Modal for full-size images */
+  .modal {
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    pointer-events:none;
+  }
+  .modal .backdrop {
+    position:absolute;
+    inset:0;
+    background: rgba(20,20,20,0.65);
+    opacity:0;
+    transition: opacity .35s ease;
+  }
+  .modal.show .backdrop { opacity:1; pointer-events:auto; }
 
+  .modal .panel {
+    max-width:min(95vw,1200px);
+    max-height:90vh;
+    transform:scale(.95);
+    opacity:0;
+    transition:transform .35s cubic-bezier(.2,.9,.2,1), opacity .35s ease;
+    pointer-events:auto;
+    border-radius:10px;
+    overflow:hidden;
+    background:#f5f5f5;
+    display:flex;
+    box-shadow:0 18px 40px rgba(0,0,0,.35);
+  }
+  .modal.show .panel { opacity:1; transform:scale(1); }
+
+  .modal img { width:100%; height:100%; object-fit:contain; background:#111; }
+  .close-btn {
+    position:absolute; right:10px; top:10px;
+    z-index:5;
+    background:rgba(255,255,255,.9);
+    border:none;
+    border-radius:6px;
+    padding:6px 9px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .close-btn:hover { background:#fff; color:#000; }
 </style>
 </head>
-
 <body>
-
 <div id="fade-overlay"></div>
 
-<!-- Sidebar -->
 <div class="sidebar">
-    <h2>Eva Kitrozoska</h2>
-    <p>Portraits and visual art.</p>
-    <a href="index.html">Back</a>
+  <h2>Eva Kitrozoska</h2>
+  <p>Portraits and visual art.</p>
+  <a href="index.html">Back</a>
 </div>
 
-<!-- Main content -->
 <div class="main">
-    <div class="navbar">
-        <a href="index.html">Home</a>
+  <div class="navbar">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="project-showcase">
+    <div class="project-item">
+      <div class="project-text">Conference Portraits 2025</div>
+      <a href="#">
+        <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8525.png" alt="Conference Portrait 2025">
+      </a>
     </div>
-
-    <div class="project-showcase">
-        <div class="project-item">
-            <div class="project-text">Conference Portraits 2025</div>
-            <a href="conf1.html">
-                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8548kj.jpg');"></div>
-            </a>
-        </div>
-
-        <div class="project-item">
-            <div class="project-text">Conference Portraits 2024</div>
-            <a href="conf2.html">
-                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8532.png');"></div>
-            </a>
-        </div>
-
-        <div class="project-item">
-            <div class="project-text">Conference Portraits 2023</div>
-            <a href="conf3.html">
-                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8536.png');"></div>
-            </a>
-        </div>
+    <div class="project-item">
+      <div class="project-text">Conference Portraits 2024</div>
+      <a href="#">
+        <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8532.png" alt="Conference Portrait 2024">
+      </a>
     </div>
+    <div class="project-item">
+      <div class="project-text">Conference Portraits 2023</div>
+      <a href="#">
+        <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/IMG_8536.png" alt="Conference Portrait 2023">
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="backdrop" id="modal-backdrop"></div>
+  <div class="panel">
+    <button class="close-btn" id="modal-close">✕</button>
+    <img id="modal-img" src="" alt="">
+  </div>
 </div>
 
 <script>
-// Page fade-in
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => document.body.classList.add('loaded'), 10);
-    setTimeout(() => document.getElementById('fade-overlay').classList.remove('active'), 10);
-});
+  // Page fade-in
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(()=> document.body.classList.add('loaded'),10);
+    document.getElementById('fade-overlay').classList.remove('active');
+  });
 
-// Fade overlay on link click
-document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', function(e){
-        const href = this.getAttribute('href');
-        if(href && !href.startsWith('#') && !href.startsWith('javascript:')){
-            e.preventDefault();
-            document.body.classList.remove('loaded');
-            document.getElementById('fade-overlay').classList.add('active');
-            setTimeout(()=> { window.location.href = href; }, 500);
-        }
+  // Fade overlay on link click
+  document.querySelectorAll('a').forEach(link=>{
+    link.addEventListener('click',function(e){
+      const href=this.getAttribute('href');
+      if(href && !href.startsWith('#') && !href.startsWith('javascript:')){
+        e.preventDefault();
+        document.getElementById('fade-overlay').classList.add('active');
+        setTimeout(()=> window.location.href=href,500);
+      }
     });
-});
-</script>
+  });
 
+  // Modal logic
+  const modal=document.getElementById('modal');
+  const modalImg=document.getElementById('modal-img');
+  const modalClose=document.getElementById('modal-close');
+  const modalBackdrop=document.getElementById('modal-backdrop');
+  document.querySelectorAll('.project-item a').forEach(a=>{
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      modalImg.src=this.querySelector('img').src;
+      modalImg.alt=this.querySelector('img').alt;
+      modal.classList.add('show');
+      document.body.style.overflow='hidden';
+    });
+  });
+  function closeModal(){
+    modal.classList.remove('show');
+    document.body.style.overflow='';
+    setTimeout(()=> modalImg.src='',350);
+  }
+  modalClose.addEventListener('click',closeModal);
+  modalBackdrop.addEventListener('click',closeModal);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape' && modal.classList.contains('show')) closeModal();});
+</script>
 </body>
 </html>
-
