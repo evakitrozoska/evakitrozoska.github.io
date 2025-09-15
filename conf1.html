@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project Gallery</title>
+<title>Gallery</title>
 <style>
 body {
     font-family: monospace;
@@ -31,41 +31,50 @@ body {
 }
 .topbar .back-btn:hover { background-color: #505050; color: #8cff00; }
 
-/* Gallery layout */
+/* Main content */
 .main { padding: 20px; max-width: 1200px; margin: 0 auto; }
-.gallery { display: grid; grid-template-columns: 1fr; gap: 20px; }
-.item img {
+
+/* Gallery grid */
+.gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+.gallery img {
     width: 100%;
     height: 300px;
     object-fit: cover;
     cursor: pointer;
-    transition: transform 0.3s ease, filter 0.3s ease;
     border-radius: 8px;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
-.item img:hover { transform: scale(1.03); filter: brightness(1.05); }
+.gallery img:hover {
+    transform: scale(1.03);
+    filter: brightness(1.05);
+}
 
-/* Desktop: 2 per row, same height, sharp edges */
+/* Desktop: 2 images per row, show cropped part */
 @media (min-width: 820px) {
     .gallery { grid-template-columns: repeat(2, 1fr); }
-    .item img { height: 380px; border-radius: 0; }
+    .gallery img { height: 380px; border-radius: 4px; }
 }
 
-/* Fullscreen image overlay */
+/* Fullscreen overlay */
 #fullscreen {
     display: none;
     position: fixed;
     top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.95);
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    transition: opacity 0.3s ease;
 }
 #fullscreen img {
     max-width: 95%;
     max-height: 95%;
     object-fit: contain;
     cursor: pointer;
-    transition: transform 0.3s ease;
 }
 </style>
 </head>
@@ -78,14 +87,14 @@ body {
 
 <div class="main">
     <div class="gallery">
-        <div class="item"><img src="images/IMG_8525.png" alt="Portrait 1"></div>
-        <div class="item"><img src="images/IMG_8532.png" alt="Portrait 2"></div>
-        <div class="item"><img src="images/IMG_8536.png" alt="Portrait 3"></div>
-        <div class="item"><img src="images/IMG_8539.png" alt="Portrait 4"></div>
+        <img src="images/IMG_8525.png" alt="Portrait 1">
+        <img src="images/IMG_8532.png" alt="Portrait 2">
+        <img src="images/IMG_8536.png" alt="Portrait 3">
+        <img src="images/IMG_8539.png" alt="Portrait 4">
+        <!-- Add more images as needed -->
     </div>
 </div>
 
-<!-- Fullscreen overlay -->
 <div id="fullscreen">
     <img src="" alt="">
 </div>
@@ -94,14 +103,16 @@ body {
 // Fullscreen open on click
 const fullscreen = document.getElementById('fullscreen');
 const fsImg = fullscreen.querySelector('img');
-document.querySelectorAll('.item img').forEach(img=>{
-    img.addEventListener('click', ()=>{
+document.querySelectorAll('.gallery img').forEach(img => {
+    img.addEventListener('click', () => {
         fsImg.src = img.src;
         fsImg.alt = img.alt;
         fullscreen.style.display = 'flex';
     });
 });
-fullscreen.addEventListener('click', ()=>{
+
+// Close fullscreen on click
+fullscreen.addEventListener('click', () => {
     fullscreen.style.display = 'none';
     fsImg.src = '';
 });
