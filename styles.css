@@ -1,0 +1,144 @@
+body {
+    font-family: monospace;
+    background-color: #1e1e1e;
+    color: #dcdcdc;
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Topbar for mobile and desktop */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2a2a2a;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.topbar .name {
+    color: #8cff00;
+    font-size: 1.8rem;
+    font-weight: bold;
+    transition: font-size 0.3s ease;
+}
+.topbar .back-btn {
+    font-size: 0.95rem;
+    color: #8cff00;
+    text-decoration: none;
+    background-color: #3a3a3a;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+.topbar .back-btn:hover {
+    background-color: #8cff00;
+    color: #1e1e1e;
+}
+
+/* Shrink topbar on scroll */
+.topbar.shrink .name {
+    font-size: 1.3rem;
+}
+.topbar.shrink {
+    padding: 5px 15px;
+}
+
+/* Main content */
+.main {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.project-detail h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #8cff00;
+}
+
+.project-detail h2 {
+    font-size: 1.5rem;
+    margin: 30px 0 15px;
+    color: #8cff00;
+}
+
+.project-detail .project-img {
+    width: 100%;
+    height: 300px; /* fixed height */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-detail .project-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.project-detail p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Code block */
+pre {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    color: #8cff00;
+    font-size: 0.9rem;
+}
+
+/* Tags */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+}
+.tags span {
+    background-color: #3a3a3a;
+    color: #dcdcdc;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+/* Carousel arrows */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(58,58,58,0.8);
+    color: #8cff00;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1.5rem;
+    user-select: none;
+    z-index: 10;
+}
+.carousel-arrow:hover {
+    background: #8cff00;
+    color: #1e1e1e;
+}
+#prev-btn {
+    left: 10px;
+}
+#next-btn {
+    right: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .topbar .name {
+        font-size: 1.5rem;
+    }
+}
