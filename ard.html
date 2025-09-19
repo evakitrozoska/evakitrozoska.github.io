@@ -74,13 +74,10 @@
 
     .project-detail .project-img {
         width: 100%;
-        height: auto;
         max-height: 400px;
-        background-color: #444;
         border-radius: 8px;
         margin-bottom: 20px;
         position: relative;
-        overflow: hidden;
     }
 
     .project-detail p {
@@ -161,7 +158,8 @@
 
         <!-- Image Carousel -->
         <div class="project-img">
-            <img id="carousel-image" src="images/img1.jpg" alt="Project Image" style="width:100%; border-radius:8px;">
+            <img id="carousel-image" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg" 
+                 alt="Project Image" style="width:100%; height:auto; display:block; border-radius:8px;">
             <a id="prev-btn" class="carousel-arrow">&#10094;</a>
             <a id="next-btn" class="carousel-arrow">&#10095;</a>
         </div>
@@ -250,10 +248,9 @@
 
     // Carousel
     const images = [
-      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/7.png",
-      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/8.png",
-      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/9.png", 
-        "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/10.png"
+      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg",
+      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/2.jpeg",
+      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/3.jpeg"
     ];
     let currentIndex = 0;
     const imgElement = document.getElementById("carousel-image");
@@ -268,5 +265,3 @@
 </script>
 </body>
 </html>
-
-
