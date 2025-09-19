@@ -8,6 +8,8 @@ body {
     overflow-x: hidden;
 }
 
+a { text-decoration: none; }
+
 /* --- Topbar --- */
 .topbar {
     display: flex;
@@ -20,77 +22,108 @@ body {
     z-index: 100;
     transition: padding 0.3s;
 }
+
 .topbar .name {
     color: #8cff00;
     font-size: 1.8rem;
     font-weight: bold;
     transition: font-size 0.3s ease;
 }
+
 .topbar .back-btn {
     font-size: 0.95rem;
     color: #8cff00;
-    text-decoration: none;
     background-color: #3a3a3a;
     padding: 5px 10px;
     border-radius: 6px;
     transition: all 0.3s ease;
 }
+
 .topbar .back-btn:hover {
     background-color: #8cff00;
     color: #1e1e1e;
 }
+
 .topbar.shrink .name { font-size: 1.3rem; }
 .topbar.shrink { padding: 5px 15px; }
 
-/* --- Main Content --- */
+/* --- Main content --- */
 .main {
     padding: 20px;
-    max-width: 1200px; /* bigger max width for larger images */
+    max-width: 900px;
     margin: 0 auto;
 }
-.project-detail h1 { font-size: 2rem; margin-bottom: 15px; color: #8cff00; }
-.project-detail h2 { font-size: 1.5rem; margin: 30px 0 15px; color: #8cff00; }
-.project-detail p { line-height: 1.6; margin-bottom: 20px; }
 
-/* --- Images & Carousels --- */
-.single-img-container,
-.project-img,
+.project-detail h1 { 
+    font-size: 2rem; 
+    margin-bottom: 15px; 
+    color: #8cff00; 
+}
+
+.project-detail h2 { 
+    font-size: 1.5rem; 
+    margin: 30px 0 15px; 
+    color: #8cff00; 
+}
+
+.project-detail p { 
+    line-height: 1.6; 
+    margin-bottom: 20px; 
+}
+
+/* --- Single images --- */
+.single-img-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 1rem auto;
+    background-color: #111;
+    overflow: hidden;
+}
+
+.single-img-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* --- Carousels --- */
 .carousel-container {
     position: relative;
     width: 100%;
-    max-width: 900px; /* bigger max width */
+    max-width: 700px;
     margin: 1rem auto;
     overflow: hidden;
     background-color: #111;
 }
 
-.single-img-container img,
-.project-img img,
 .carousel-container img {
+    display: block;
     width: 100%;
     height: auto;
-    display: block;
     object-fit: contain;
 }
 
-/* --- Carousel Arrows --- */
+/* Carousel arrows */
 .carousel-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     background: rgba(58, 58, 58, 0.8);
     color: #8cff00;
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     user-select: none;
     z-index: 10;
 }
+
 .carousel-arrow.left { left: 10px; }
 .carousel-arrow.right { right: 10px; }
 
-/* --- Captions --- */
+/* Carousel captions */
 .carousel-caption {
     text-align: center;
     color: white;
@@ -109,6 +142,7 @@ body {
     gap: 8px;
     margin: 20px 0;
 }
+
 .tags span {
     background-color: #3a3a3a;
     color: #dcdcdc;
@@ -117,7 +151,7 @@ body {
     font-size: 0.85rem;
 }
 
-/* --- Code blocks --- */
+/* --- Preformatted code --- */
 pre {
     background-color: #2a2a2a;
     padding: 15px;
@@ -128,11 +162,9 @@ pre {
 }
 
 /* --- Responsive --- */
-@media screen and (max-width: 1024px) {
-    .main { max-width: 90%; }
-    .carousel-arrow { font-size: 1.5rem; padding: 6px 10px; }
-}
 @media screen and (max-width: 768px) {
     .topbar .name { font-size: 1.5rem; }
-    .carousel-arrow { font-size: 1.3rem; padding: 5px 8px; }
+    .carousel-arrow { font-size: 1.2rem; padding: 5px 8px; }
+    .project-detail h1 { font-size: 1.6rem; }
+    .project-detail h2 { font-size: 1.3rem; }
 }
