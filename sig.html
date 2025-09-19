@@ -32,14 +32,17 @@
         <p>
             <b>Lookup Table (LUT):</b> 32-entry sine wave table stores precomputed samples for a quarter of a sine period, copied from C-generated values.<br>
             <b>Phase Accumulator and Step Size:</b> 32-bit phase accumulator increments each clock edge. Step size is calculated from the desired output frequency to provide precise control.<br>
-            <b>Signal Types:</b> Sine uses LUT with quadrant mirroring, amplitude scaling, PWM conversion; Square compares accumulator to duty threshold; Sawtooth ramps directly from accumulator bits; Triangle folds accumulator for rising/falling slopes.<br>
+            <b>Signal Types:</b> Sine uses LUT with quadrant mirroring, amplitude scaling, PWM conversion. Square compares accumulator to duty threshold. Sawtooth ramps directly from accumulator bits. Triangle folds accumulator for rising/falling slopes.<br>
             <b>Amplitude and PWM Conversion:</b> Waveforms are scaled and converted into 8-bit PWM output. Future plan: low-pass filter for analog reconstruction.<br>
             <b>Parameters:</b> 50 MHz system clock, 16-bit frequency control, 8-bit amplitude control, duty cycle 0–100%, phase input reserved for later use.
         </p>
 
         <h2>Future Improvements</h2>
         <p>
-            Refactor and optimize VHDL code for readability and efficiency. Finish the PWM filter to visualize analog waveform. Add phase shift control for advanced signal synthesis. Develop a control interface for easier parameter tuning.
+            Refactor and optimize VHDL code for readability and efficiency.<br>
+            Finish the PWM filter to visualize analog waveform.<br>
+            Add phase shift control for advanced signal synthesis.<br>
+            Develop a control interface for easier parameter tuning.
         </p>
 
         <!-- Tags -->
