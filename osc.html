@@ -18,19 +18,21 @@
   <div class="project-detail">
     <h1>MATLAB Oscilloscope Simulator</h1>
 
-    <!-- HERO image (no wrapper background, fills width) -->
+    <!-- HERO image -->
     <div class="single-img-container">
       <img id="hero-img" src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
     </div>
 
     <p>
       This MATLAB project is a learning tool designed to understand oscilloscope operation and basic signal analysis in both time and frequency domains.
-      It supports two channels and includes features such as <strong>MATH operations</strong>, <strong>XY mode</strong> (Lissajous), trigger settings, and random signal generation.
+      It supports two channels and includes features such as <strong>MATH operations</strong> (addition, subtraction, multiplication, FFT), 
+      <strong>XY mode</strong> (Lissajous patterns), <strong>trigger settings</strong> (level, slope, source), and dynamic random signal generation. 
+      The simulator is ideal for visualizing waveforms and experimenting with oscilloscope functionalities without hardware.
     </p>
 
     <h2>Main Features</h2>
 
-    <!-- MAIN carousel (buttons, not links) -->
+    <!-- MAIN carousel -->
     <div class="carousel-container" id="main-carousel-container">
       <img id="main-carousel" alt="oscilloscope screenshot">
       <button id="main-prev" class="carousel-arrow left" aria-label="previous">&#10094;</button>
@@ -40,11 +42,11 @@
 
     <h2>Code / Functionality</h2>
     <p>
-      <strong>Signal generation:</strong> random DC, sine, square, sawtooth components.<br>
-      <strong>Trigger search:</strong> finds crossings; falls back to an autotrigger point if none found.<br>
-      <strong>Math:</strong> CH1+CH2, CH1-CH2, CH1×CH2, FFT.<br>
-      <strong>Coupling:</strong> DC/AC.<br>
-      <strong>Timer:</strong> updates at 50 ms.
+      <strong>Signal Generation:</strong> Generates random test waveforms dynamically with DC, sine, square, and sawtooth components, each with random frequency, amplitude, and phase.<br>
+      <strong>Trigger Search:</strong> Scans the selected channel for points where the waveform crosses the trigger level in the chosen slope direction. If no crossing is found, a random point is chosen to maintain continuous display (mimicking Auto mode).<br>
+      <strong>Math Operations:</strong> Real-time CH1 + CH2, CH1 – CH2, CH1 × CH2; FFT for spectral analysis.<br>
+      <strong>Coupling:</strong> DC and AC; AC mode removes mean automatically.<br>
+      <strong>Timer & Updates:</strong> A MATLAB timer updates every 50ms. Signals are computed with microsecond resolution. Max visualizable frequency (Nyquist) = 500 kHz.
     </p>
 
     <h2>Bonus: Lissajous Patterns</h2>
@@ -59,13 +61,15 @@
     </div>
 
     <h2>Future Improvements</h2>
-    <p>cursors, trigger modes, filtering, microphone input, record/export</p>
+    <p>
+      Implement cursors; add additional trigger modes (single, delayed); expand math and signal processing options (filters, RMS, averaging); enable real-time input from a microphone or hardware; record and export waveforms.
+    </p>
 
   </div>
 </div>
 
 <script>
-/* carousel images (replace if needed) */
+/* carousel images */
 const mainImages = [
   {src:"https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc1.PNG", caption:"Random signals, CH1+CH2, Time mode"},
   {src:"https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc2.PNG", caption:"FFT (Fourier Transform)"},
@@ -93,43 +97,37 @@ const bonusNext = document.getElementById('bonus-next');
 let mainIndex = 0;
 let bonusIndex = 0;
 
-/* safe set (fallback to first image on error) */
 function safeSet(imgEl, url, fallback) {
   imgEl.src = url;
   imgEl.onerror = () => { if (fallback && imgEl.src !== fallback) imgEl.src = fallback; };
 }
 
-/* show functions */
 function showMain(i) {
   mainIndex = (i + mainImages.length) % mainImages.length;
   safeSet(mainImg, mainImages[mainIndex].src, mainImages[0].src);
   mainCaption.textContent = mainImages[mainIndex].caption || '';
 }
+
 function showBonus(i) {
   bonusIndex = (i + bonusImages.length) % bonusImages.length;
   safeSet(bonusImg, bonusImages[bonusIndex], bonusImages[0]);
 }
 
-/* handlers */
 mainPrev.addEventListener('click', (e)=>{ e.preventDefault(); showMain(mainIndex-1); });
 mainNext.addEventListener('click', (e)=>{ e.preventDefault(); showMain(mainIndex+1); });
 bonusPrev.addEventListener('click', (e)=>{ e.preventDefault(); showBonus(bonusIndex-1); });
 bonusNext.addEventListener('click', (e)=>{ e.preventDefault(); showBonus(bonusIndex+1); });
 
-/* init */
 document.addEventListener('DOMContentLoaded', ()=>{
-  // hero fallback in case main static fails
   const hero = document.getElementById('hero-img');
   hero.onerror = ()=> { hero.src = mainImages[0].src; };
 
   showMain(0);
   showBonus(0);
 
-  // topbar shrink
   const topbar = document.getElementById('topbar');
   window.addEventListener('scroll', ()=> topbar.classList.toggle('shrink', window.scrollY > 20));
 
-  // keyboard navigation for main carousel
   document.addEventListener('keydown', (e)=> {
     if (e.key === 'ArrowLeft') mainPrev.click();
     if (e.key === 'ArrowRight') mainNext.click();
