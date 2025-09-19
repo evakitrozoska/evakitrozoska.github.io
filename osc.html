@@ -121,8 +121,14 @@
         z-index: 10;
     }
     .carousel-arrow:hover { background: #8cff00; color: #1e1e1e; }
+
+    /* Main carousel arrows */
     #prev-btn { left: 10px; }
     #next-btn { right: 10px; }
+
+    /* Bonus carousel arrows */
+    #bonus-prev { left: 10px; }
+    #bonus-next { right: 10px; }
 
     @media screen and (max-width: 768px) { .topbar .name { font-size: 1.5rem; } }
 </style>
@@ -261,26 +267,19 @@
     // Ensure the static hero image is visible. If it fails, fallback to the main carousel's first image.
     const staticImg = document.getElementById('static-img');
     staticImg.addEventListener('error', () => {
-        // If static image is missing, use first carousel image as fallback
         staticImg.src = mainImages[0].src;
     });
 
     // On DOM ready: set initial images, compute aspect ratios from the first images
     document.addEventListener('DOMContentLoaded', () => {
-        // initialize main and bonus images
         showMainIndex(0);
         bonusImg.src = bonusImages[0];
-
-        // set container aspect ratios based on the first images
         setContainerAspect(document.getElementById('static-container'), mainImages[0].src);
         setContainerAspect(document.getElementById('main-carousel-container'), mainImages[0].src);
         setContainerAspect(document.getElementById('bonus-carousel-container'), bonusImages[0]);
-
-        // If you want to update aspect ratio when user changes which image is 'primary',
-        // you can call setContainerAspect(...) again with a different src.
     });
 
-    // Optional: make carousels keyboard accessible (left/right)
+    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') prevBtn.click();
         if (e.key === 'ArrowRight') nextBtn.click();
