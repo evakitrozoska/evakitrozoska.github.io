@@ -19,13 +19,6 @@
     <div class="project-detail">
         <h1>MIDI Theremin with Arduino</h1>
 
-        <!-- Image Carousel -->
-        <div class="project-img" id="carousel-container">
-            <img id="carousel-image" src="" alt="Project Image">
-            <a id="prev-btn" class="carousel-arrow">&#10094;</a>
-            <a id="next-btn" class="carousel-arrow">&#10095;</a>
-        </div>
-
         <!-- Description -->
         <p>
             This is my first project in microcontrollers. It's a MIDI instrument played in real time: 
@@ -39,6 +32,13 @@
             for virtual ports and <a href="https://edharmasiri.github.io/hairless-midiserial-with-minimize-to-tray/" target="_blank"><b>Hairless MIDI</b></a> to send signals. 
             DAW: <b>Cubase 12</b>.
         </p>
+
+        <!-- Image Carousel (after first paragraph) -->
+        <div class="project-img" id="theremin-carousel-container">
+            <img id="theremin-carousel" src="" alt="Project Image">
+            <a id="theremin-prev" class="carousel-arrow">&#10094;</a>
+            <a id="theremin-next" class="carousel-arrow">&#10095;</a>
+        </div>
 
         <!-- Components -->
         <h2>Components</h2>
@@ -104,38 +104,47 @@
       topbar.classList.toggle('shrink', window.scrollY > 20);
     });
 
-    // Carousel
-    const images = [
+    // Carousel images
+    const thereminImages = [
       "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/9.png",
       "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/8.png",
       "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/7.png"
     ];
-    let currentIndex = 0;
-    const imgElement = document.getElementById("carousel-image");
-    const container = document.getElementById("carousel-container");
 
-    function setContainerAspect(imgSrc) {
+    let thereminIndex = 0;
+    const thereminImg = document.getElementById("theremin-carousel");
+    const thereminContainer = document.getElementById("theremin-carousel-container");
+
+    // Set container aspect ratio based on image
+    function setThereminAspect(imgSrc) {
         const probe = new Image();
         probe.src = imgSrc;
         probe.onload = () => {
             const ratioPercent = (probe.height / probe.width) * 100;
-            container.style.setProperty('--padding-top', ratioPercent + '%');
+            thereminContainer.style.setProperty('--padding-top', ratioPercent + '%');
         };
-        probe.onerror = () => container.style.setProperty('--padding-top', '56.25%');
+        probe.onerror = () => thereminContainer.style.setProperty('--padding-top', '56.25%');
     }
 
-    function showImage(i) {
-        currentIndex = (i + images.length) % images.length;
-        imgElement.src = images[currentIndex];
-        setContainerAspect(images[currentIndex]);
+    // Show image at index
+    function showThereminIndex(i) {
+        thereminIndex = (i + thereminImages.length) % thereminImages.length;
+        thereminImg.src = thereminImages[thereminIndex];
+        setThereminAspect(thereminImages[thereminIndex]);
     }
 
-    document.getElementById("prev-btn").onclick = () => showImage(currentIndex - 1);
-    document.getElementById("next-btn").onclick = () => showImage(currentIndex + 1);
+    // Initialize carousel
+    showThereminIndex(0);
 
-    // Initialize first image
-    document.addEventListener('DOMContentLoaded', () => showImage(0));
+    // Arrow buttons
+    document.getElementById("theremin-prev").onclick = () => showThereminIndex(thereminIndex - 1);
+    document.getElementById("theremin-next").onclick = () => showThereminIndex(thereminIndex + 1);
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') showThereminIndex(thereminIndex - 1);
+        if (e.key === 'ArrowRight') showThereminIndex(thereminIndex + 1);
+    });
 </script>
-
 </body>
 </html>
