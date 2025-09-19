@@ -167,8 +167,7 @@
 
         <!-- Image Carousel -->
         <div class="project-img">
-            <img id="carousel-image" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg" 
-                 alt="Project Image">
+            <img id="carousel-image" src="" alt="Project Image">
             <a id="prev-btn" class="carousel-arrow">&#10094;</a>
             <a id="next-btn" class="carousel-arrow">&#10095;</a>
         </div>
@@ -259,10 +258,14 @@
     const images = [
       "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/9.png",
       "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/8.png",
-        "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/7.png"
+      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/7.png"
     ];
     let currentIndex = 0;
     const imgElement = document.getElementById("carousel-image");
+
+    // Set initial image to first in array
+    imgElement.src = images[currentIndex];
+
     document.getElementById("prev-btn").onclick = () => {
       currentIndex = (currentIndex - 1 + images.length) % images.length;
       imgElement.src = images[currentIndex];
@@ -274,5 +277,3 @@
 </script>
 </body>
 </html>
-
-
