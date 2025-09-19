@@ -19,17 +19,17 @@
     <div class="project-detail">
         <h1>FPGA Waveform Generator (VHDL)</h1>
 
-        <!-- Project Image -->
-        <div class="project-img">
-            <img src="images/fpga_waveform.jpg" alt="FPGA Waveform Generator">
-        </div>
-
         <!-- Description -->
         <p>
             This is an unfinished project currently in progress. The goal is to build a waveform generator on FPGA that can output <b>sine</b>, <b>square</b>, <b>sawtooth</b>, and <b>triangle</b> signals. It uses <b>Direct Digital Synthesis (DDS)</b> with a <i>phase accumulator</i> and <i>lookup tables (LUTs)</i>. Frequency, amplitude, duty cycle, and waveform type are programmable, with the signals produced as PWM that can be filtered into analog.  
 
             For the LUT values for the sine, I wrote a short C program to generate the numbers, which were then manually copied into the VHDL table. The next step of this project is building a filter for the PWM output so I can view the reconstructed analog signals directly.
         </p>
+
+        <!-- Project Image (moved here after first paragraph) -->
+        <div class="project-img">
+            <img src="images/fpga_waveform.jpg" alt="FPGA Waveform Generator">
+        </div>
 
         <!-- Code / Functionality -->
         <h2>Code / Functionality</h2>
