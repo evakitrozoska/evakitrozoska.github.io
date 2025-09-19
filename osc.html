@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>MATLAB Oscilloscope Simulator</title>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -10,127 +10,141 @@
 
 <!-- Topbar -->
 <div class="topbar" id="topbar">
-  <span class="name">Projects</span>
-  <a href="index.html" class="back-btn">← Back</a>
+  <div class="name">Projects</div>
+  <a class="back-btn" href="index.html">← Back</a>
 </div>
 
-<!-- Main content -->
 <div class="main">
-    <div class="project-detail">
-        <h1>MATLAB Oscilloscope Simulator</h1>
+  <div class="project-detail">
+    <h1>MATLAB Oscilloscope Simulator</h1>
 
-        <!-- Hero image -->
-        <div class="single-img-container">
-            <img src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
-        </div>
-
-        <p>
-            This MATLAB project is a learning tool designed to understand oscilloscope operation and basic signal analysis in both time and frequency domains.
-            It supports two channels and includes features such as <b>MATH operations</b> (addition, subtraction, multiplication, FFT),
-            <b>XY mode</b> (Lissajous patterns), <b>trigger settings</b> (level, slope, source), and dynamic random signal generation.
-        </p>
-
-        <!-- Main Carousel -->
-        <h2>Main Features</h2>
-        <div class="carousel-container" id="main-carousel-container">
-            <img id="main-carousel" src="" alt="Oscilloscope Image">
-            <a id="main-prev" class="carousel-arrow left">&#10094;</a>
-            <a id="main-next" class="carousel-arrow right">&#10095;</a>
-            <div id="main-caption" class="carousel-caption"></div>
-        </div>
-
-        <!-- Code / Functionality -->
-        <h2>Code / Functionality</h2>
-        <p>
-            <b>Signal Generation:</b> Generates random test waveforms dynamically with DC, sine, square, and sawtooth components, each with random frequency, amplitude, and phase.<br><br>
-            <b>Trigger Search:</b> Scans the selected channel for points where the waveform crosses the trigger level in the chosen slope direction. If no crossing is found, a random point is chosen to maintain continuous display (mimicking Auto mode).<br><br>
-            <b>Math Operations:</b> Real-time CH1 + CH2, CH1 – CH2, CH1 × CH2; FFT for spectral analysis.<br><br>
-            <b>Coupling:</b> DC and AC; AC mode removes mean automatically.<br><br>
-            <b>Timer & Updates:</b> A MATLAB timer updates every 50ms. Signals are computed with microsecond resolution. Max visualizable frequency (Nyquist) = 500 kHz.<br>
-        </p>
-
-        <!-- Bonus Carousel -->
-        <h2>Bonus: Lissajous Patterns</h2>
-        <div class="carousel-container" id="bonus-carousel-container">
-            <img id="bonus-carousel" src="" alt="Lissajous Pattern">
-            <a id="bonus-prev" class="carousel-arrow left">&#10094;</a>
-            <a id="bonus-next" class="carousel-arrow right">&#10095;</a>
-        </div>
-
-        <!-- Tags -->
-        <div class="tags">
-            <span>MATLAB</span>
-            <span>Oscilloscope</span>
-            <span>Signal Processing</span>
-            <span>Learning Tool</span>
-        </div>
-
-        <!-- Future Improvements -->
-        <h2>Future Improvements</h2>
-        <p>
-            Implement cursors; add additional trigger modes (single, delayed); expand math and signal processing options (filters, RMS, averaging); enable real-time input from a microphone or hardware; record and export waveforms
-        </p>
+    <!-- HERO: single image -->
+    <div class="single-img-container" id="hero-container">
+      <img id="hero-img" alt="Oscilloscope Overview"
+           src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg">
     </div>
+
+    <p>
+      This MATLAB project is a learning tool designed to understand oscilloscope operation and basic signal analysis in both time and frequency domains.
+      It supports two channels and includes features such as <strong>MATH operations</strong> (addition, subtraction, multiplication, FFT),
+      <strong>XY mode</strong> (Lissajous patterns), <strong>trigger settings</strong> (level, slope, source), and dynamic random signal generation.
+    </p>
+
+    <!-- MAIN CAROUSEL -->
+    <h2>Main Features</h2>
+    <div class="carousel-container" id="main-carousel-container">
+      <img id="main-carousel" alt="Oscilloscope screenshot">
+      <a id="main-prev" class="carousel-arrow left" href="#" aria-label="Previous">&#10094;</a>
+      <a id="main-next" class="carousel-arrow right" href="#" aria-label="Next">&#10095;</a>
+      <div id="main-caption" class="carousel-caption"></div>
+    </div>
+
+    <h2>Code / Functionality</h2>
+    <p>
+      <strong>Signal Generation:</strong> Generates random test waveforms dynamically with DC, sine, square, and sawtooth components, each with random frequency, amplitude, and phase.<br><br>
+      <strong>Trigger Search:</strong> Scans the selected channel for points where the waveform crosses the trigger level in the chosen slope direction. If no crossing is found, a random point is chosen to maintain continuous display (mimicking Auto mode).<br><br>
+      <strong>Math Operations:</strong> Real-time CH1 + CH2, CH1 – CH2, CH1 × CH2; FFT for spectral analysis.<br><br>
+      <strong>Coupling:</strong> DC and AC; AC mode removes mean automatically.<br><br>
+      <strong>Timer & Updates:</strong> A MATLAB timer updates every 50ms. Signals are computed with microsecond resolution (Nyquist depends on sampling interval).
+    </p>
+
+    <!-- BONUS CAROUSEL -->
+    <h2>Bonus: Lissajous Patterns</h2>
+    <div class="carousel-container" id="bonus-carousel-container">
+      <img id="bonus-carousel" alt="Lissajous pattern">
+      <a id="bonus-prev" class="carousel-arrow left" href="#" aria-label="Previous">&#10094;</a>
+      <a id="bonus-next" class="carousel-arrow right" href="#" aria-label="Next">&#10095;</a>
+    </div>
+
+    <!-- Tags -->
+    <div class="tags">
+      <span>MATLAB</span>
+      <span>Oscilloscope</span>
+      <span>Signal Processing</span>
+      <span>Learning Tool</span>
+    </div>
+
+    <h2>Future Improvements</h2>
+    <p>Implement cursors; add additional trigger modes (single, delayed); expand math and signal processing options (filters, RMS, averaging); enable real-time input from a microphone or hardware; record and export waveforms.</p>
+  </div>
 </div>
 
 <script>
-    // Shrink topbar on scroll
-    const topbar = document.getElementById('topbar');
-    window.addEventListener('scroll', () => {
-        topbar.classList.toggle('shrink', window.scrollY > 20);
-    });
+/* === JS for carousels ===
+   - loads first images
+   - sets caption
+   - simple fallback if loads fail
+*/
 
-    // --- Main Carousel ---
-    const mainImages = [
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc1.PNG", caption: "Random signals, CH1 + CH2, Time mode" },
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc2.PNG", caption: "FFT (Fourier Transform)" },
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc3.PNG", caption: "XY Mode (Lissajous)" },
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc5.PNG", caption: "Trigger, Negative slope" },
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc4.PNG", caption: "Trigger, Positive slope" }
-    ];
-    let mainIndex = 0;
-    const mainImg = document.getElementById("main-carousel");
-    const mainCaption = document.getElementById("main-caption");
-    const mainPrev = document.getElementById("main-prev");
-    const mainNext = document.getElementById("main-next");
+/* images arrays (replace urls if you have new ones) */
+const mainImages = [
+  {src:"https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc1.PNG", caption:"Random signals, CH1 + CH2, Time mode"},
+  {src:"https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc2.PNG", caption:"FFT (Fourier Transform)"},
+  {src:"https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc3.PNG", caption:"XY Mode (Lissajous)"},
+  {src:"https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc5.PNG", caption:"Trigger, Negative slope"},
+  {src:"https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc4.PNG", caption:"Trigger, Positive slope"}
+];
 
-    function showMainIndex(i) {
-        mainIndex = (i + mainImages.length) % mainImages.length;
-        mainImg.src = mainImages[mainIndex].src;
-        mainCaption.textContent = mainImages[mainIndex].caption;
-    }
+const bonusImages = [
+  "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool3.PNG",
+  "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool2.PNG",
+  "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool1.PNG"
+];
 
-    mainPrev.onclick = () => showMainIndex(mainIndex - 1);
-    mainNext.onclick = () => showMainIndex(mainIndex + 1);
+let mainIndex = 0;
+let bonusIndex = 0;
 
-    // --- Bonus Carousel ---
-    const bonusImages = [
-        "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool3.PNG",
-        "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool2.PNG",
-        "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool1.PNG"
-    ];
-    let bonusIndex = 0;
-    const bonusImg = document.getElementById("bonus-carousel");
-    document.getElementById("bonus-prev").onclick = () => {
-        bonusIndex = (bonusIndex - 1 + bonusImages.length) % bonusImages.length;
-        bonusImg.src = bonusImages[bonusIndex];
-    };
-    document.getElementById("bonus-next").onclick = () => {
-        bonusIndex = (bonusIndex + 1) % bonusImages.length;
-        bonusImg.src = bonusImages[bonusIndex];
-    };
+const mainImgEl = document.getElementById('main-carousel');
+const mainCaptionEl = document.getElementById('main-caption');
+const mainPrev = document.getElementById('main-prev');
+const mainNext = document.getElementById('main-next');
 
-    // Initialize first images
-    document.addEventListener('DOMContentLoaded', () => {
-        showMainIndex(0);
-        bonusImg.src = bonusImages[0];
-    });
+const bonusImgEl = document.getElementById('bonus-carousel');
+const bonusPrev = document.getElementById('bonus-prev');
+const bonusNext = document.getElementById('bonus-next');
 
-    // Keyboard navigation for main carousel
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') mainPrev.click();
-        if (e.key === 'ArrowRight') mainNext.click();
-    });
+/* helper to set image with onerror fallback */
+function safeSetImage(imgEl, url, fallbackUrl) {
+  imgEl.src = url;
+  imgEl.onerror = () => { if (fallbackUrl && imgEl.src !== fallbackUrl) imgEl.src = fallbackUrl; };
+}
+
+/* main carousel functions */
+function showMain(i) {
+  mainIndex = (i + mainImages.length) % mainImages.length;
+  safeSetImage(mainImgEl, mainImages[mainIndex].src, mainImages[0].src);
+  mainCaptionEl.textContent = mainImages[mainIndex].caption || '';
+}
+mainPrev.addEventListener('click', (e) => { e.preventDefault(); showMain(mainIndex - 1); });
+mainNext.addEventListener('click', (e) => { e.preventDefault(); showMain(mainIndex + 1); });
+
+/* bonus carousel functions */
+function showBonus(i) {
+  bonusIndex = (i + bonusImages.length) % bonusImages.length;
+  safeSetImage(bonusImgEl, bonusImages[bonusIndex], bonusImages[0]);
+}
+bonusPrev.addEventListener('click', (e) => { e.preventDefault(); showBonus(bonusIndex - 1); });
+bonusNext.addEventListener('click', (e) => { e.preventDefault(); showBonus(bonusIndex + 1); });
+
+/* init on DOM ready */
+document.addEventListener('DOMContentLoaded', () => {
+  // Hero image fallback
+  const hero = document.getElementById('hero-img');
+  hero.onerror = () => { hero.src = mainImages[0].src; };
+
+  showMain(0);
+  showBonus(0);
+});
+
+/* topbar shrink */
+const topbar = document.getElementById('topbar');
+window.addEventListener('scroll', () => topbar.classList.toggle('shrink', window.scrollY > 20));
+
+/* keyboard navigation for convenience */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') mainPrev.click();
+  if (e.key === 'ArrowRight') mainNext.click();
+});
 </script>
 
 </body>
