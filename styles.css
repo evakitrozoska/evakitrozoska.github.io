@@ -61,9 +61,8 @@ body {
 .carousel-container,
 .project-img {
     position: relative;
-    width: 100%;       /* exactly match text width */
+    width: 100%;
     margin: 18px 0;
-    background-color: #111;
     overflow: hidden;
     border-radius: 6px;
     display: block;
@@ -75,10 +74,9 @@ body {
 .carousel-container img,
 .project-img img {
     display: block;
-    width: 100%;
-    height: auto;
-    max-height: 65vh;
-    object-fit: cover;  
+    width: 100%;   /* fills container exactly */
+    height: auto;  /* preserves aspect ratio */
+    object-fit: unset;  /* no cover or contain */
 }
 
 /* Carousel Arrows */
@@ -143,4 +141,5 @@ pre {
     .topbar .name { font-size: 1.5rem; }
     .carousel-arrow { font-size: 1.2rem; padding: 5px 8px; }
 }
+
 
