@@ -24,7 +24,7 @@
     </div>
 
     <p>
-      This MATLAB project is a learning tool designed to understand oscilloscope operation and basic signal analysis in both time and frequency domains.
+      <br>This MATLAB project is a learning tool designed to understand oscilloscope operation and basic signal analysis in both time and frequency domains.
       It supports two channels and includes features such as <strong>MATH operations</strong> (addition, subtraction, multiplication, FFT), 
       <strong>XY mode</strong> (Lissajous patterns), <strong>trigger settings</strong> (level, slope, source), and dynamic random signal generation. 
       The simulator is ideal for visualizing waveforms and experimenting with oscilloscope functionalities without hardware.
@@ -42,11 +42,14 @@
 
     <h2>Code / Functionality</h2>
     <p>
-      <strong>Signal Generation:</strong> Generates random test waveforms dynamically with DC, sine, square, and sawtooth components, each with random frequency, amplitude, and phase.<br>
-      <strong>Trigger Search:</strong> Scans the selected channel for points where the waveform crosses the trigger level in the chosen slope direction. If no crossing is found, a random point is chosen to maintain continuous display (mimicking Auto mode).<br>
-      <strong>Math Operations:</strong> Real-time CH1 + CH2, CH1 – CH2, CH1 × CH2; FFT for spectral analysis.<br>
-      <strong>Coupling:</strong> DC and AC; AC mode removes mean automatically.<br>
-      <strong>Timer & Updates:</strong> A MATLAB timer updates every 50ms. Signals are computed with microsecond resolution. Max visualizable frequency (Nyquist) = 500 kHz.
+      <strong>Signal Generation:</strong> Generates random test waveforms dynamically with DC, sine, square, and sawtooth components, each with random frequency, amplitude, and phase.<br><br>
+      <strong>Trigger Search:</strong> Scans the selected channel for points where the waveform crosses the trigger level in the chosen slope direction. If no crossing is found, a random point is chosen to maintain continuous display (mimicking Auto mode).<br><br>
+      <strong>Math Operations:</strong> Real-time CH1 + CH2, CH1 – CH2, CH1 × CH2; FFT for spectral analysis.<br><br>
+      <strong>Coupling:</strong> DC and AC; AC mode removes mean automatically.<br><br>
+      <strong>Timer & Updates:</strong> A MATLAB timer updates every 50 ms. Signals are computed with 1 µs (microsecond) resolution. Maximum visualizable frequency (Nyquist) is calculated as:
+
+f<sub>Nyquist</sub> = 1 / (2 × Δt) = 1 / (2 × 1e-6 s) = 500 kHz.
+
     </p>
 
     <h2>Bonus: Lissajous Patterns</h2>
@@ -136,3 +139,4 @@ document.addEventListener('DOMContentLoaded', ()=>{
 </script>
 </body>
 </html>
+
