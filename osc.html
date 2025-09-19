@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MATLAB Oscilloscope Simulator</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPGA Waveform Generator (VHDL)</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,119 +17,81 @@
 <!-- Main content -->
 <div class="main">
     <div class="project-detail">
-        <h1>MATLAB Oscilloscope Simulator</h1>
+        <h1>FPGA Waveform Generator (VHDL)</h1>
 
-        <!-- Static overview image -->
-        <div class="project-img">
-            <img id="static-img" src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
-        </div>
-
+        <!-- Description -->
         <p>
-            This MATLAB project is a learning tool designed to understand oscilloscope operation and basic signal analysis in both time and frequency domains.
-            It supports two channels and includes features such as <b>MATH operations</b> (addition, subtraction, multiplication, FFT),
-            <b>XY mode</b> (Lissajous patterns), <b>trigger settings</b> (level, slope, source), and dynamic random signal generation.
+            This is an unfinished project currently in progress. The goal is to build a waveform generator on FPGA that can output <b>sine</b>, <b>square</b>, <b>sawtooth</b>, and <b>triangle</b> signals. It uses <b>Direct Digital Synthesis (DDS)</b> with a <i>phase accumulator</i> and <i>lookup tables (LUTs)</i>. Frequency, amplitude, duty cycle, and waveform type are programmable, with the signals produced as PWM that can be filtered into analog.  
+
+            For the LUT values for the sine, I wrote a short C program to generate the numbers, which were then manually copied into the VHDL table. The next step of this project is building a filter for the PWM output so I can view the reconstructed analog signals directly.
         </p>
 
-        <!-- Main Carousel -->
-        <h2>Main Features</h2>
-        <div class="project-img" id="main-carousel-container">
-            <img id="carousel-image" src="" alt="Oscilloscope Image">
-            <a id="prev-btn" class="carousel-arrow">&#10094;</a>
-            <a id="next-btn" class="carousel-arrow">&#10095;</a>
+        <!-- Project Image (aspect ratio handled) -->
+        <div class="project-img" id="fpga-image-container">
+            <img id="fpga-image" src="" alt="FPGA Waveform Generator">
         </div>
-        <div id="carousel-caption" class="carousel-caption"></div>
 
         <!-- Code / Functionality -->
         <h2>Code / Functionality</h2>
-        <p>
-            <b>Signal Generation:</b> Generates random test waveforms dynamically with DC, sine, square, and sawtooth components, each with random frequency, amplitude, and phase.<br><br>
-            <b>Trigger Search:</b> Scans the selected channel for points where the waveform crosses the trigger level in the chosen slope direction. If no crossing is found, a random point is chosen to maintain continuous display (mimicking Auto mode).<br><br>
-            <b>Math Operations:</b> Real-time CH1 + CH2, CH1 – CH2, CH1 × CH2; FFT for spectral analysis.<br><br>
-            <b>Coupling:</b> DC and AC; AC mode removes mean automatically.<br><br>
-            <b>Timer & Updates:</b> A MATLAB timer updates every 50ms. Signals are computed with microsecond resolution. Max visualizable frequency (Nyquist) = 500 kHz.<br>
-        </p>
-
-        <!-- Bonus Carousel -->
-        <h2>Bonus: Lissajous Patterns</h2>
-        <div class="project-img" id="bonus-carousel-container">
-            <img id="bonus-carousel" src="" alt="Lissajous Pattern">
-            <a id="bonus-prev" class="carousel-arrow">&#10094;</a>
-            <a id="bonus-next" class="carousel-arrow">&#10095;</a>
-        </div>
-
-        <!-- Tags -->
-        <div class="tags">
-            <span>MATLAB</span>
-            <span>Oscilloscope</span>
-            <span>Signal Processing</span>
-            <span>Learning Tool</span>
-        </div>
+        <ul>
+            <li><b>Lookup Table (LUT):</b> 32-entry sine wave table stores precomputed samples for a quarter of a sine period, copied from C-generated values.</li>
+            <li><b>Phase Accumulator and Step Size:</b> 32-bit phase accumulator increments each clock edge. The step size is calculated from the desired output frequency to provide precise frequency control.</li>
+            <li><b>Signal Types:</b> 
+                <ul>
+                    <li>Sine: LUT with quadrant mirroring, amplitude scaling, PWM conversion.</li>
+                    <li>Square: Compares accumulator to duty threshold.</li>
+                    <li>Sawtooth: Direct ramp from accumulator bits.</li>
+                    <li>Triangle: Folded accumulator for rising and falling slopes.</li>
+                </ul>
+            </li>
+            <li><b>Amplitude and PWM Conversion:</b> Waveforms are scaled and converted into 8-bit PWM output. Future plan: low-pass filter for analog reconstruction.</li>
+            <li><b>Parameters:</b> 50 MHz system clock, 16-bit frequency control, 8-bit amplitude control, duty cycle 0–100%, phase input reserved for later use.</li>
+        </ul>
 
         <!-- Future Improvements -->
         <h2>Future Improvements</h2>
-        <p>
-            Implement cursors; add additional trigger modes (single, delayed); expand math and signal processing options (filters, RMS, averaging); enable real-time input from a microphone or hardware; record and export waveforms
-        </p>
+        <ul>
+            <li>Refactor and optimize VHDL code for readability and efficiency.</li>
+            <li>Finish the PWM filter to visualize the analog waveform.</li>
+            <li>Add phase shift control for more advanced signal synthesis.</li>
+            <li>Develop a control interface for easier parameter tuning.</li>
+        </ul>
+
+        <!-- Tags -->
+        <div class="tags">
+            <span>FPGA</span>
+            <span>VHDL</span>
+            <span>Electronics</span>
+            <span>PWM</span>
+            <span>DDS</span>
+        </div>
     </div>
 </div>
 
 <script>
-    // Topbar shrink on scroll
+    // Shrink topbar on scroll
     const topbar = document.getElementById('topbar');
     window.addEventListener('scroll', () => {
-        topbar.classList.toggle('shrink', window.scrollY > 20);
+      topbar.classList.toggle('shrink', window.scrollY > 20);
     });
 
-    // --- Main carousel ---
-    const mainImages = [
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc1.PNG", caption: "Random signals, CH1 + CH2, Time mode" },
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc2.PNG", caption: "FFT (Fourier Transform)" },
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc3.PNG", caption: "XY Mode (Lissajous)" },
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc5.PNG", caption: "Trigger, Negative slope" },
-        { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc4.PNG", caption: "Trigger, Positive slope" }
-    ];
-    let mainIndex = 0;
-    const mainImg = document.getElementById("carousel-image");
-    const mainCaption = document.getElementById("carousel-caption");
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
+    // Set FPGA image and compute aspect ratio dynamically
+    const fpgaImgSrc = "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/siggen.PNG";
+    const fpgaImg = document.getElementById('fpga-image');
+    const fpgaContainer = document.getElementById('fpga-image-container');
 
-    function showMainIndex(i) {
-        mainIndex = (i + mainImages.length) % mainImages.length;
-        mainImg.src = mainImages[mainIndex].src;
-        mainCaption.textContent = mainImages[mainIndex].caption;
+    function setContainerAspect(imgSrc) {
+        const probe = new Image();
+        probe.src = imgSrc;
+        probe.onload = () => {
+            const ratioPercent = (probe.height / probe.width) * 100;
+            fpgaContainer.style.setProperty('--padding-top', ratioPercent + '%');
+        };
+        probe.onerror = () => fpgaContainer.style.setProperty('--padding-top', '56.25%');
     }
-    prevBtn.onclick = () => showMainIndex(mainIndex - 1);
-    nextBtn.onclick = () => showMainIndex(mainIndex + 1);
 
-    // --- Bonus carousel ---
-    const bonusImages = [
-        "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool3.PNG",
-        "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool2.PNG",
-        "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool1.PNG"
-    ];
-    let bonusIndex = 0;
-    const bonusImg = document.getElementById("bonus-carousel");
-    document.getElementById("bonus-prev").onclick = () => {
-        bonusIndex = (bonusIndex - 1 + bonusImages.length) % bonusImages.length;
-        bonusImg.src = bonusImages[bonusIndex];
-    };
-    document.getElementById("bonus-next").onclick = () => {
-        bonusIndex = (bonusIndex + 1) % bonusImages.length;
-        bonusImg.src = bonusImages[bonusIndex];
-    };
-
-    // Initialize on DOM ready
-    document.addEventListener('DOMContentLoaded', () => {
-        showMainIndex(0);
-        bonusImg.src = bonusImages[0];
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') prevBtn.click();
-        if (e.key === 'ArrowRight') nextBtn.click();
-    });
+    fpgaImg.src = fpgaImgSrc;
+    setContainerAspect(fpgaImgSrc);
 </script>
 
 </body>
