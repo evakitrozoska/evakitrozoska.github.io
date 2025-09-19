@@ -1,123 +1,61 @@
-/* Global */
-body {
-    font-family: monospace;
-    background-color: #1e1e1e;
-    color: #dcdcdc;
-    margin: 0;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-/* Topbar */
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #2a2a2a;
-    padding: 10px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.topbar .name {
-    color: #8cff00;
-    font-size: 1.8rem;
-    font-weight: bold;
-    transition: font-size 0.3s ease;
-}
-
-.topbar .back-btn {
-    font-size: 0.95rem;
-    color: #8cff00;
-    text-decoration: none;
-    background-color: #3a3a3a;
-    padding: 5px 10px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-}
-
-.topbar .back-btn:hover {
-    background-color: #8cff00;
-    color: #1e1e1e;
-}
-
-.topbar.shrink .name { font-size: 1.3rem; }
-.topbar.shrink { padding: 5px 15px; }
-
-/* Main content */
-.main { padding: 20px; max-width: 900px; margin: 0 auto; }
-
-.project-detail h1 { font-size: 2rem; margin-bottom: 15px; color: #8cff00; }
-.project-detail h2 { font-size: 1.5rem; margin: 30px 0 15px; color: #8cff00; }
-
-.project-detail p { line-height: 1.6; margin-bottom: 20px; }
-
-/* Images and Carousels */
-.project-img {
-    position: relative;
+/* --- Project images and carousels --- */
+.project-img, .single-img-container, .carousel-container {
+    position: relative;   /* necessary for arrows absolute positioning */
     width: 100%;
-    margin-bottom: 10px;
-    background-color: #111;
-    display: inline-block;
+    max-width: 700px;    /* limit max width */
+    margin: 1rem auto;
+    overflow: hidden;
 }
 
-.project-img img {
+/* Force an aspect ratio so images are not gigantic */
+.project-img::before,
+.single-img-container::before,
+.carousel-container::before {
+    content: "";
     display: block;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
+    padding-top: 56.25%; /* 16:9 aspect ratio, adjust if needed */
 }
 
-/* Carousel arrows: each carousel independently positioned */
-.project-img .carousel-arrow {
+.project-img img,
+.single-img-container img,
+.carousel-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Carousel arrows: properly positioned */
+.carousel-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(58,58,58,0.8);
+    font-size: 2rem;
     color: #8cff00;
-    padding: 6px 10px;
-    border-radius: 6px;
+    text-shadow: 0 0 5px black;
     cursor: pointer;
-    text-decoration: none;
-    font-size: 1.5rem;
-    user-select: none;
     z-index: 10;
+    user-select: none;
+    background: rgba(58, 58, 58, 0.7);
+    padding: 5px 10px;
+    border-radius: 6px;
 }
 
-#main-carousel-container #prev-btn { left: 10px; }
-#main-carousel-container #next-btn { right: 10px; }
+.carousel-arrow.left { left: 10px; }
+.carousel-arrow.right { right: 10px; }
 
-#bonus-carousel-container #bonus-prev { left: 10px; }
-#bonus-carousel-container #bonus-next { right: 10px; }
-
-/* Preformatted code blocks */
-pre {
-    background-color: #2a2a2a;
-    padding: 15px;
-    border-radius: 6px;
-    overflow-x: auto;
+/* Optional: caption inside carousel */
+.carousel-caption {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: rgba(0,0,0,0.5);
     color: #8cff00;
+    padding: 0.3rem 0;
     font-size: 0.9rem;
-}
-
-/* Tags */
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 20px 0;
-}
-
-.tags span {
-    background-color: #3a3a3a;
-    color: #dcdcdc;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-}
-
-@media screen and (max-width: 768px) {
-    .topbar .name { font-size: 1.5rem; }
-    .project-img .carousel-arrow { font-size: 1.2rem; padding: 5px 8px; }
+    box-sizing: border-box;
 }
