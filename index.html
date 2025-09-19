@@ -92,10 +92,11 @@ body {
 /* Main content */
 .main {
     flex-grow: 1;
-    padding: 0; /* removed side padding */
+    padding: 20px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    align-items: center; /* center content */
 }
 
 /* Navbar */
@@ -103,6 +104,8 @@ body {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 900px;
 }
 .navbar a {
     text-decoration: none;
@@ -123,6 +126,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 100%;
+    max-width: 900px; /* constrain width */
 }
 .project-item { width: 100%; }
 .project-item a {
@@ -131,12 +136,12 @@ body {
     color: inherit;
 }
 .project-img {
-    width: 100%;              /* full width of container */
-    height: 450px;            /* keep height */
+    width: 100%;
+    height: 450px;
     background-color: #555;
-    background-size: cover;    /* fill space */
+    background-size: cover;
     background-position: center;
-    border-radius: 8px;        /* keep corners rounded */
+    border-radius: 8px;
     transition: all 0.3s ease;
 }
 .project-img:hover {
@@ -192,32 +197,31 @@ body {
     </div>
 
     <div class="project-showcase">
-    <div class="project-item" data-category="Arduino,MIDI,C / Cpp">
-        <div class="project-text">MIDI Theremin with Arduino</div>
-        <a href="ard.html">
-            <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/10.png');"></div>
-        </a>
+        <div class="project-item" data-category="Arduino,MIDI,C / Cpp">
+            <div class="project-text">MIDI Theremin with Arduino</div>
+            <a href="ard.html">
+                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/10.png');"></div>
+            </a>
+        </div>
+        <div class="project-item" data-category="MATLAB">
+            <div class="project-text">Oscilloscope Simulation in MATLAB</div>
+            <a href="osc.html">
+                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc.PNG');"></div>
+            </a>
+        </div>
+        <div class="project-item" data-category="VHDL">
+            <div class="project-text">VHDL signal generator</div>
+            <a href="sig.html">
+                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
+            </a>
+        </div>
+        <div class="project-item" data-category="MIDI">
+            <div class="project-text">A repurposed XP-pen</div>
+            <a href="xpp.html">
+                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
+            </a>
+        </div>
     </div>
-    <div class="project-item" data-category="MATLAB">
-        <div class="project-text">Oscilloscope Simulation in MATLAB</div>
-        <a href="osc.html">
-            <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc.PNG');"></div>
-        </a>
-    </div>
-    <div class="project-item" data-category="VHDL">
-        <div class="project-text">VHDL signal generator</div>
-        <a href="sig.html">
-            <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
-        </a>
-    </div>
-    <div class="project-item" data-category="MIDI">
-        <div class="project-text">A repurposed XP-pen</div>
-        <a href="xpp.html">
-            <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
-        </a>
-    </div>
-</div>
-
 </div>
 
 <script>
@@ -266,6 +270,3 @@ filterProjects();
 </script>
 </body>
 </html>
-
-
-
