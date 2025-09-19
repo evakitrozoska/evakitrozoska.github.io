@@ -1,145 +1,140 @@
+/* Universal project CSS — images fill the text width exactly (no padding/black) */
+
+/* reset box sizing */
+* { box-sizing: border-box; }
+
 /* Global */
+:root {
+  --content-width: 900px;
+  --bg: #1e1e1e;
+  --accent: #8cff00;
+  --muted: #dcdcdc;
+}
+html,body { height:100%; }
 body {
-    font-family: monospace;
-    background-color: #1e1e1e;
-    color: #dcdcdc;
-    margin: 0;
-    min-height: 100vh;
-    overflow-x: hidden;
+  margin:0;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--muted);
+  font-family: monospace;
+  -webkit-font-smoothing:antialiased;
 }
 
 /* Topbar */
 .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #2a2a2a;
-    padding: 10px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  position: sticky;
+  top:0;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 20px;
+  background:#2a2a2a;
 }
-
-.topbar .name {
-    color: #8cff00;
-    font-size: 1.8rem;
-    font-weight: bold;
-    transition: font-size 0.3s ease;
-}
-
+.topbar .name { color:var(--accent); font-size:1.8rem; font-weight:700; }
 .topbar .back-btn {
-    font-size: 0.95rem;
-    color: #8cff00;
-    text-decoration: none;
-    background-color: #3a3a3a;
-    padding: 5px 10px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+  color:var(--accent);
+  background:#3a3a3a;
+  padding:6px 10px;
+  border-radius:6px;
+  text-decoration:none;
 }
+.topbar .back-btn:hover { background:var(--accent); color: #111; }
+.topbar.shrink .name { font-size:1.25rem; }
+.topbar.shrink { padding:6px 15px; }
 
-.topbar .back-btn:hover {
-    background-color: #8cff00;
-    color: #1e1e1e;
-}
-
-.topbar.shrink .name { font-size: 1.3rem; }
-.topbar.shrink { padding: 5px 15px; }
-
-/* Main content */
+/* main container (text width) */
 .main {
-    padding: 20px;
-    max-width: 900px;
-    margin: 0 auto;
+  width:100%;
+  max-width:var(--content-width);
+  margin:0 auto;
+  padding:20px;
 }
 
-.project-detail h1 { font-size: 2rem; margin-bottom: 15px; color: #8cff00; }
-.project-detail h2 { font-size: 1.5rem; margin: 30px 0 15px; color: #8cff00; }
-.project-detail p { line-height: 1.6; margin-bottom: 20px; }
+/* headings/text */
+.project-detail h1 { color:var(--accent); margin:0 0 12px 0; font-size:2rem; }
+.project-detail h2 { color:var(--accent); margin:28px 0 12px 0; font-size:1.4rem; }
+.project-detail p { line-height:1.6; margin:0 0 16px 0; }
 
-/* Image & Carousel Containers */
+/* IMAGE / CAROUSEL container rules
+   -> container width equals text width (100% of .main)
+   -> NO background so nothing shows behind images */
 .single-img-container,
 .carousel-container,
 .project-img {
-    position: relative;
-    width: 100%;
-    margin: 18px 0;
-    overflow: hidden;
-    border-radius: 6px;
-    display: block;
-    padding: 0;
-    max-width: 100%;
+  position: relative;
+  width: 100%;        /* exact same width as text (.main) */
+  margin: 18px 0;
+  overflow: hidden;
+  border-radius: 6px; /* optional */
+  padding: 0;         /* NO padding */
+  background: transparent; /* IMPORTANT: no panel color that shows through */
+  display: block;
 }
 
+/* THE IMAGE ITSELF: fill container width exactly, preserve aspect ratio, no extra space */
 .single-img-container img,
 .carousel-container img,
 .project-img img {
-    display: block;
-    width: 100%;   /* fills container exactly */
-    height: auto;  /* preserves aspect ratio */
-    object-fit: unset;  /* no cover or contain */
+  display: block;
+  width: 100%;
+  height: auto;   /* preserve aspect ratio; no object-fit */
+  max-width: 100%;
+  margin: 0;      /* no margins that produce whitespace */
+  border-radius: inherit;
+  background: transparent;
 }
 
-/* Carousel Arrows */
+/* Carousel arrows */
 .carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(58,58,58,0.8);
-    color: #8cff00;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 1.5rem;
-    user-select: none;
-    z-index: 10;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(34,34,34,0.9);
+  color: var(--accent);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
 }
-
 .carousel-arrow.left { left: 10px; }
 .carousel-arrow.right { right: 10px; }
 
-/* Carousel captions */
+/* caption (optional) */
 .carousel-caption {
-    text-align: center;
-    color: white;
-    background-color: rgba(0,0,0,0.5);
-    padding: 0.25rem 0.5rem;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    box-sizing: border-box;
+  position: absolute;
+  left:0; right:0; bottom:0;
+  padding:8px 10px;
+  background: rgba(0,0,0,0.55);
+  color:#fff;
+  font-size:0.95rem;
+  text-align:center;
+  z-index:30;
 }
 
-/* Preformatted code blocks */
+/* tags & code style */
+.tags { display:flex; gap:8px; flex-wrap:wrap; margin:18px 0; }
+.tags span { background:#333; color:var(--muted); padding:6px 10px; border-radius:6px; font-size:0.9rem; }
+
 pre {
-    background-color: #2a2a2a;
-    padding: 15px;
-    border-radius: 6px;
-    overflow-x: auto;
-    color: #8cff00;
-    font-size: 0.9rem;
+  background:#222;
+  color:var(--accent);
+  padding:12px;
+  border-radius:6px;
+  overflow-x:auto;
 }
 
-/* Tags */
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 20px 0;
+/* responsive */
+@media (max-width: 900px) {
+  :root { --content-width: 100%; }
+  .carousel-arrow { font-size:1.1rem; padding:6px 9px; }
 }
-
-.tags span {
-    background-color: #3a3a3a;
-    color: #dcdcdc;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
+@media (max-width:480px) {
+  .topbar .name { font-size:1.2rem; }
+  .carousel-arrow { font-size:1rem; padding:5px 8px; }
 }
-
-/* Media Queries */
-@media screen and (max-width: 768px) {
-    .topbar .name { font-size: 1.5rem; }
-    .carousel-arrow { font-size: 1.2rem; padding: 5px 8px; }
-}
-
-
