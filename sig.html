@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FPGA Waveform Generator (VHDL)</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -26,9 +26,9 @@
             For the LUT values for the sine, I wrote a short C program to generate the numbers, which were then manually copied into the VHDL table. The next step of this project is building a filter for the PWM output so I can view the reconstructed analog signals directly.
         </p>
 
-        <!-- Project Image (moved here after first paragraph) -->
-        <div class="project-img">
-            <img src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/siggen.PNG" alt="FPGA Waveform Generator">
+        <!-- Project Image (aspect ratio handled) -->
+        <div class="project-img" id="fpga-image-container">
+            <img id="fpga-image" src="" alt="FPGA Waveform Generator">
         </div>
 
         <!-- Code / Functionality -->
@@ -72,13 +72,27 @@
     // Shrink topbar on scroll
     const topbar = document.getElementById('topbar');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        topbar.classList.add('shrink');
-      } else {
-        topbar.classList.remove('shrink');
-      }
+      topbar.classList.toggle('shrink', window.scrollY > 20);
     });
+
+    // Set FPGA image and compute aspect ratio dynamically
+    const fpgaImgSrc = "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/siggen.PNG";
+    const fpgaImg = document.getElementById('fpga-image');
+    const fpgaContainer = document.getElementById('fpga-image-container');
+
+    function setContainerAspect(imgSrc) {
+        const probe = new Image();
+        probe.src = imgSrc;
+        probe.onload = () => {
+            const ratioPercent = (probe.height / probe.width) * 100;
+            fpgaContainer.style.setProperty('--padding-top', ratioPercent + '%');
+        };
+        probe.onerror = () => fpgaContainer.style.setProperty('--padding-top', '56.25%');
+    }
+
+    fpgaImg.src = fpgaImgSrc;
+    setContainerAspect(fpgaImgSrc);
 </script>
+
 </body>
 </html>
-
