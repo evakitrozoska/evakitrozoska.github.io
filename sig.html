@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,43 +19,28 @@
     <div class="project-detail">
         <h1>FPGA Waveform Generator (VHDL)</h1>
 
-        <!-- Description -->
         <p>
-            This is an unfinished project currently in progress. The goal is to build a waveform generator on FPGA that can output <b>sine</b>, <b>square</b>, <b>sawtooth</b>, and <b>triangle</b> signals. It uses <b>Direct Digital Synthesis (DDS)</b> with a <i>phase accumulator</i> and <i>lookup tables (LUTs)</i>. Frequency, amplitude, duty cycle, and waveform type are programmable, with the signals produced as PWM that can be filtered into analog.  
-
-            For the LUT values for the sine, I wrote a short C program to generate the numbers, which were then manually copied into the VHDL table. The next step of this project is building a filter for the PWM output so I can view the reconstructed analog signals directly.
+            This is an unfinished project currently in progress. The goal is to build a waveform generator on FPGA that can output <b>sine</b>, <b>square</b>, <b>sawtooth</b>, and <b>triangle</b> signals. It uses <b>Direct Digital Synthesis (DDS)</b> with a <i>phase accumulator</i> and <i>lookup tables (LUTs)</i>. Frequency, amplitude, duty cycle, and waveform type are programmable, with the signals produced as PWM that can be filtered into analog. For the LUT values for the sine, I wrote a short C program to generate the numbers, which were then manually copied into the VHDL table. The next step is building a filter for the PWM output to view the reconstructed analog signals directly.
         </p>
 
-        <!-- Project Image (aspect ratio handled) -->
+        <!-- Project Image -->
         <div class="project-img" id="fpga-image-container">
             <img id="fpga-image" src="" alt="FPGA Waveform Generator">
         </div>
 
-        <!-- Code / Functionality -->
         <h2>Code / Functionality</h2>
-        <ul>
-            <li><b>Lookup Table (LUT):</b> 32-entry sine wave table stores precomputed samples for a quarter of a sine period, copied from C-generated values.</li>
-            <li><b>Phase Accumulator and Step Size:</b> 32-bit phase accumulator increments each clock edge. The step size is calculated from the desired output frequency to provide precise frequency control.</li>
-            <li><b>Signal Types:</b> 
-                <ul>
-                    <li>Sine: LUT with quadrant mirroring, amplitude scaling, PWM conversion.</li>
-                    <li>Square: Compares accumulator to duty threshold.</li>
-                    <li>Sawtooth: Direct ramp from accumulator bits.</li>
-                    <li>Triangle: Folded accumulator for rising and falling slopes.</li>
-                </ul>
-            </li>
-            <li><b>Amplitude and PWM Conversion:</b> Waveforms are scaled and converted into 8-bit PWM output. Future plan: low-pass filter for analog reconstruction.</li>
-            <li><b>Parameters:</b> 50 MHz system clock, 16-bit frequency control, 8-bit amplitude control, duty cycle 0–100%, phase input reserved for later use.</li>
-        </ul>
+        <p>
+            <b>Lookup Table (LUT):</b> 32-entry sine wave table stores precomputed samples for a quarter of a sine period, copied from C-generated values.<br>
+            <b>Phase Accumulator and Step Size:</b> 32-bit phase accumulator increments each clock edge. Step size is calculated from the desired output frequency to provide precise control.<br>
+            <b>Signal Types:</b> Sine uses LUT with quadrant mirroring, amplitude scaling, PWM conversion; Square compares accumulator to duty threshold; Sawtooth ramps directly from accumulator bits; Triangle folds accumulator for rising/falling slopes.<br>
+            <b>Amplitude and PWM Conversion:</b> Waveforms are scaled and converted into 8-bit PWM output. Future plan: low-pass filter for analog reconstruction.<br>
+            <b>Parameters:</b> 50 MHz system clock, 16-bit frequency control, 8-bit amplitude control, duty cycle 0–100%, phase input reserved for later use.
+        </p>
 
-        <!-- Future Improvements -->
         <h2>Future Improvements</h2>
-        <ul>
-            <li>Refactor and optimize VHDL code for readability and efficiency.</li>
-            <li>Finish the PWM filter to visualize the analog waveform.</li>
-            <li>Add phase shift control for more advanced signal synthesis.</li>
-            <li>Develop a control interface for easier parameter tuning.</li>
-        </ul>
+        <p>
+            Refactor and optimize VHDL code for readability and efficiency. Finish the PWM filter to visualize analog waveform. Add phase shift control for advanced signal synthesis. Develop a control interface for easier parameter tuning.
+        </p>
 
         <!-- Tags -->
         <div class="tags">
@@ -66,6 +50,7 @@
             <span>PWM</span>
             <span>DDS</span>
         </div>
+
     </div>
 </div>
 
