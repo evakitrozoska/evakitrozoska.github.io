@@ -4,133 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MATLAB Oscilloscope Simulator</title>
-<style>
-    body {
-        font-family: monospace;
-        background-color: #1e1e1e;
-        color: #dcdcdc;
-        margin: 0;
-        min-height: 100vh;
-        overflow-x: hidden;
-    }
-
-    /* Topbar */
-    .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #2a2a2a;
-        padding: 10px 20px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
-    .topbar .name {
-        color: #8cff00;
-        font-size: 1.8rem;
-        font-weight: bold;
-        transition: font-size 0.3s ease;
-    }
-    .topbar .back-btn {
-        font-size: 0.95rem;
-        color: #8cff00;
-        text-decoration: none;
-        background-color: #3a3a3a;
-        padding: 5px 10px;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-    }
-    .topbar .back-btn:hover {
-        background-color: #8cff00;
-        color: #1e1e1e;
-    }
-    .topbar.shrink .name { font-size: 1.3rem; }
-    .topbar.shrink { padding: 5px 15px; }
-
-    /* Main content */
-    .main { padding: 20px; max-width: 900px; margin: 0 auto; }
-
-    .project-detail h1 { font-size: 2rem; margin-bottom: 15px; color: #8cff00; }
-    .project-detail h2 { font-size: 1.5rem; margin: 30px 0 15px; color: #8cff00; }
-
-    /* image container with dynamic aspect ratio based on first image */
-    .project-img {
-        width: 100%;
-        position: relative;
-        border-radius: 8px;
-        margin-bottom: 5px;
-        overflow: hidden;
-        background-color: #111; /* avoids sudden white flash */
-    }
-    /* padding-top controls aspect ratio: set by JS to match first image */
-    .project-img::before {
-        content: '';
-        display: block;
-        padding-top: var(--padding-top, 56.25%); /* default 16:9 */
-    }
-    .project-img img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* preserve whole image, no cropping */
-        display: block;
-    }
-
-    .carousel-caption {
-        text-align: center;
-        font-size: 0.95rem;
-        margin-bottom: 20px;
-    }
-
-    .project-detail p { line-height: 1.6; margin-bottom: 20px; }
-
-    pre {
-        background-color: #2a2a2a;
-        padding: 15px;
-        border-radius: 6px;
-        overflow-x: auto;
-        color: #8cff00;
-        font-size: 0.9rem;
-    }
-
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
-    .tags span {
-        background-color: #3a3a3a;
-        color: #dcdcdc;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 0.85rem;
-    }
-
-    /* Carousel arrows */
-    .carousel-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(58,58,58,0.8);
-        color: #8cff00;
-        padding: 6px 10px;
-        border-radius: 6px;
-        cursor: pointer;
-        text-decoration: none;
-        font-size: 1.5rem;
-        user-select: none;
-        z-index: 10;
-    }
-    .carousel-arrow:hover { background: #8cff00; color: #1e1e1e; }
-
-    /* Main carousel arrows */
-    #prev-btn { left: 10px; }
-    #next-btn { right: 10px; }
-
-    /* Bonus carousel arrows */
-    #bonus-prev { left: 10px; }
-    #bonus-next { right: 10px; }
-
-    @media screen and (max-width: 768px) { .topbar .name { font-size: 1.5rem; } }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -145,7 +19,7 @@
     <div class="project-detail">
         <h1>MATLAB Oscilloscope Simulator</h1>
 
-        <!-- Single static image at top - container has id for JS aspect handling -->
+        <!-- Single static image at top -->
         <div class="project-img" id="static-container">
             <img id="static-img" src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
         </div>
@@ -206,7 +80,7 @@
       topbar.classList.toggle('shrink', window.scrollY > 20);
     });
 
-    // --- Image arrays (no change) ---
+    // --- Image arrays ---
     const mainImages = [
         { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc1.PNG", caption: "Random signals, CH1 + CH2, Time mode" },
         { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc2.PNG", caption: "FFT (Fourier Transform)" },
@@ -220,7 +94,7 @@
         "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool1.PNG"
     ];
 
-    // --- Helper: set container aspect ratio to match an image's natural ratio ---
+    // --- Helper: set container aspect ratio ---
     function setContainerAspect(containerEl, imgSrc) {
         if (!containerEl) return;
         const probe = new Image();
@@ -231,12 +105,11 @@
             containerEl.style.setProperty('--padding-top', ratioPercent + '%');
         };
         probe.onerror = () => {
-            // fallback to 16:9 if probe fails
             containerEl.style.setProperty('--padding-top', '56.25%');
         };
     }
 
-    // Set initial carousel images and captions, and wire buttons
+    // Set initial carousel images and captions
     let mainIndex = 0;
     const mainImg = document.getElementById("carousel-image");
     const mainCaption = document.getElementById("carousel-caption");
@@ -263,13 +136,13 @@
         bonusImg.src = bonusImages[bonusIndex];
     };
 
-    // Ensure the static hero image is visible. If it fails, fallback to the main carousel's first image.
+    // Static image fallback
     const staticImg = document.getElementById('static-img');
     staticImg.addEventListener('error', () => {
         staticImg.src = mainImages[0].src;
     });
 
-    // On DOM ready: set initial images, compute aspect ratios from the first images
+    // DOM ready: initial images + aspect ratios
     document.addEventListener('DOMContentLoaded', () => {
         showMainIndex(0);
         bonusImg.src = bonusImages[0];
@@ -287,5 +160,3 @@
 
 </body>
 </html>
-
-
