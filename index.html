@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>   
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,16 +6,6 @@
 <title>My Portfolio</title>
 <style>
 /* Reset */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: monospace;
-    background-color: #1e1e1e;
-    color: #dcdcdc;
-    margin: 0;
-    width: 100vw;
-}
-
-/* Fade overlay */
 #fade-overlay {
     position: fixed;
     top: 0; left: 0;
@@ -28,27 +18,60 @@ body {
     z-index: 9999;
 }
 #fade-overlay.active { opacity: 1; }
-body.loaded { opacity: 1; transition: opacity 0.5s ease; }
+
+body {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+body.loaded { opacity: 1; }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: monospace;
+    background-color: #1e1e1e;
+    color: #dcdcdc;
+    display: flex;
+    min-height: 100vh;
+}
 
 /* Sidebar */
 .sidebar {
     width: 250px;
     background-color: #2a2a2a;
     padding: 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
     overflow-y: auto;
 }
-.sidebar h2 { font-size: 1.8rem; color: #8cff00; margin-bottom: 5px; }
-.sidebar p { font-size: 0.9rem; color: #bbbbbb; }
 
-/* Categories */
-.categories { display: flex; flex-direction: column; gap: 8px; }
+.sidebar h2 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    color: #8cff00;
+}
+
+.sidebar p {
+    font-size: 0.9rem;
+    color: #bbbbbb;
+}
+
+/* Project categories */
+.categories {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: flex-start;
+}
 .categories button {
     background-color: #3a3a3a;
     border: none;
@@ -57,32 +80,43 @@ body.loaded { opacity: 1; transition: opacity 0.5s ease; }
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.8rem;
+    font-family: monospace;
+    transition: background-color 0.2s;
     text-align: left;
     width: fit-content;
-    transition: background-color 0.2s;
 }
-.categories button:hover { background-color: #505050; }
+.categories button:hover {
+    background-color: #505050;
+}
 
 /* Main content */
 .main {
-    margin-left: 250px; /* leave space for sidebar */
+    flex-grow: 1;
+    padding: 0; /* removed side padding */
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    overflow-y: auto;
 }
 
 /* Navbar */
-.navbar { display: flex; gap: 15px; margin-bottom: 20px; }
+.navbar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
 .navbar a {
     text-decoration: none;
     color: #dcdcdc;
     background-color: #3a3a3a;
     padding: 8px 15px;
     border-radius: 6px;
-    font-size: 0.95rem;
     transition: background-color 0.2s;
+    font-size: 0.95rem;
 }
-.navbar a:hover { background-color: #505050; color: #8cff00; }
+.navbar a:hover {
+    background-color: #505050;
+    color: #8cff00;
+}
 
 /* Projects */
 .project-showcase {
@@ -90,36 +124,48 @@ body.loaded { opacity: 1; transition: opacity 0.5s ease; }
     flex-direction: column;
     gap: 20px;
 }
-.project-item { width: 100vw; margin-left: -250px; } /* extend full viewport width */
-.project-item a { display: block; text-decoration: none; color: inherit; }
+.project-item { width: 100%; }
+.project-item a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
 .project-img {
-    width: 100vw;      /* full viewport width */
-    height: 450px;     /* fixed height */
+    width: 100%;              /* full width of container */
+    height: 450px;            /* keep height */
     background-color: #555;
-    background-size: cover;
+    background-size: cover;    /* fill space */
     background-position: center;
+    border-radius: 8px;        /* keep corners rounded */
+    transition: all 0.3s ease;
+}
+.project-img:hover {
+    filter: brightness(1.1) sepia(1) hue-rotate(45deg) saturate(1);
+    cursor: pointer;
 }
 .project-text {
     color: #dcdcdc;
     font-size: 1.3rem;
     font-weight: bold;
     margin-top: 9px;
-    padding-left: 20px; /* align text with sidebar */
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .sidebar { width: 200px; }
-    .main { margin-left: 200px; }
-    .project-item { margin-left: -200px; }
 }
 @media (max-width: 480px) {
-    .sidebar { width: 100%; height: auto; position: relative; }
-    .main { margin-left: 0; padding: 10px; }
-    .project-item { margin-left: 0; width: 100%; }
+    body { flex-direction: column; }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .main { max-height: none; }
 }
 </style>
 </head>
+
 <body>
 <div id="fade-overlay"></div>
 
@@ -146,31 +192,32 @@ body.loaded { opacity: 1; transition: opacity 0.5s ease; }
     </div>
 
     <div class="project-showcase">
-        <div class="project-item" data-category="Arduino,MIDI,C / Cpp">
-            <div class="project-text">MIDI Theremin with Arduino</div>
-            <a href="ard.html">
-                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/10.png');"></div>
-            </a>
-        </div>
-        <div class="project-item" data-category="MATLAB">
-            <div class="project-text">Oscilloscope Simulation in MATLAB</div>
-            <a href="project2.html">
-                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
-            </a>
-        </div>
-        <div class="project-item" data-category="VHDL">
-            <div class="project-text">VHDL signal generator</div>
-            <a href="ard.html">
-                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
-            </a>
-        </div>
-        <div class="project-item" data-category="MIDI">
-            <div class="project-text">A repurposed XP-pen</div>
-            <a href="project2.html">
-                <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
-            </a>
-        </div>
+    <div class="project-item" data-category="Arduino,MIDI,C / Cpp">
+        <div class="project-text">MIDI Theremin with Arduino</div>
+        <a href="ard.html">
+            <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/10.png');"></div>
+        </a>
     </div>
+    <div class="project-item" data-category="MATLAB">
+        <div class="project-text">Oscilloscope Simulation in MATLAB</div>
+        <a href="project2.html">
+            <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
+        </a>
+    </div>
+    <div class="project-item" data-category="VHDL">
+        <div class="project-text">VHDL signal generator</div>
+        <a href="ard.html">
+            <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
+        </a>
+    </div>
+    <div class="project-item" data-category="MIDI">
+        <div class="project-text">A repurposed XP-pen</div>
+        <a href="project2.html">
+            <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/1.jpeg');"></div>
+        </a>
+    </div>
+</div>
+
 </div>
 
 <script>
