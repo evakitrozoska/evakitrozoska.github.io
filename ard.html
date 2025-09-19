@@ -20,7 +20,7 @@
         <h1>MIDI Theremin with Arduino</h1>
 
         <!-- Image Carousel -->
-        <div class="project-img">
+        <div class="project-img" id="carousel-container">
             <img id="carousel-image" src="" alt="Project Image">
             <a id="prev-btn" class="carousel-arrow">&#10094;</a>
             <a id="next-btn" class="carousel-arrow">&#10095;</a>
@@ -101,11 +101,7 @@
     // Shrink topbar on scroll
     const topbar = document.getElementById('topbar');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        topbar.classList.add('shrink');
-      } else {
-        topbar.classList.remove('shrink');
-      }
+      topbar.classList.toggle('shrink', window.scrollY > 20);
     });
 
     // Carousel
@@ -116,18 +112,30 @@
     ];
     let currentIndex = 0;
     const imgElement = document.getElementById("carousel-image");
+    const container = document.getElementById("carousel-container");
 
-    // Set initial image to first in array
-    imgElement.src = images[currentIndex];
+    function setContainerAspect(imgSrc) {
+        const probe = new Image();
+        probe.src = imgSrc;
+        probe.onload = () => {
+            const ratioPercent = (probe.height / probe.width) * 100;
+            container.style.setProperty('--padding-top', ratioPercent + '%');
+        };
+        probe.onerror = () => container.style.setProperty('--padding-top', '56.25%');
+    }
 
-    document.getElementById("prev-btn").onclick = () => {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      imgElement.src = images[currentIndex];
-    };
-    document.getElementById("next-btn").onclick = () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      imgElement.src = images[currentIndex];
-    };
+    function showImage(i) {
+        currentIndex = (i + images.length) % images.length;
+        imgElement.src = images[currentIndex];
+        setContainerAspect(images[currentIndex]);
+    }
+
+    document.getElementById("prev-btn").onclick = () => showImage(currentIndex - 1);
+    document.getElementById("next-btn").onclick = () => showImage(currentIndex + 1);
+
+    // Initialize first image
+    document.addEventListener('DOMContentLoaded', () => showImage(0));
 </script>
+
 </body>
 </html>
