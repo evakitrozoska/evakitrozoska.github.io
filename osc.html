@@ -19,10 +19,10 @@
     <div class="project-detail">
         <h1>MATLAB Oscilloscope Simulator</h1>
 
-        <!-- Static overview image -->
+        <!-- Hero image -->
         <div class="single-img-container">
-    <img src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
-</div>
+            <img src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
+        </div>
 
         <p>
             This MATLAB project is a learning tool designed to understand oscilloscope operation and basic signal analysis in both time and frequency domains.
@@ -68,19 +68,17 @@
         <!-- Future Improvements -->
         <h2>Future Improvements</h2>
         <p>
-            Implement cursors; add additional trigger modes (single, delayed); expand math and signal processing options (filters, RMS, averaging); enable real-time input from a microphone or hardware; record and export waveforms
+            Implement cursors; add additional trigger modes (single, delayed); expand math and signal processing options (filters, RMS, averaging); enable real-time input from a microphone or hardware; record and export waveforms.
         </p>
     </div>
 </div>
 
 <script>
-    // Topbar shrink on scroll
+    // Topbar shrink
     const topbar = document.getElementById('topbar');
-    window.addEventListener('scroll', () => {
-        topbar.classList.toggle('shrink', window.scrollY > 20);
-    });
+    window.addEventListener('scroll', () => topbar.classList.toggle('shrink', window.scrollY > 20));
 
-    // --- Main Carousel ---
+    // Main carousel
     const mainImages = [
         { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc1.PNG", caption: "Random signals, CH1 + CH2, Time mode" },
         { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc2.PNG", caption: "FFT (Fourier Transform)" },
@@ -99,11 +97,10 @@
         mainImg.src = mainImages[mainIndex].src;
         mainCaption.textContent = mainImages[mainIndex].caption;
     }
-
     mainPrev.onclick = () => showMainIndex(mainIndex - 1);
     mainNext.onclick = () => showMainIndex(mainIndex + 1);
 
-    // --- Bonus Carousel ---
+    // Bonus carousel
     const bonusImages = [
         "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool3.PNG",
         "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool2.PNG",
@@ -120,13 +117,13 @@
         bonusImg.src = bonusImages[bonusIndex];
     };
 
-    // Initialize on DOM ready
+    // Initialize carousels
     document.addEventListener('DOMContentLoaded', () => {
         showMainIndex(0);
         bonusImg.src = bonusImages[0];
     });
 
-    // Keyboard navigation for main carousel only
+    // Keyboard navigation for main carousel
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') mainPrev.click();
         if (e.key === 'ArrowRight') mainNext.click();
@@ -135,4 +132,3 @@
 
 </body>
 </html>
-
