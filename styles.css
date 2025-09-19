@@ -1,21 +1,78 @@
-/* --- General Reset for Carousels and Images --- */
-.project-img, .single-img-container, .carousel-container {
+/* --- General layout --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: #1e1e1e;
+    color: #eee;
+}
+
+.main {
+    max-width: 900px;
+    margin: auto;
+    padding: 1rem;
+}
+
+.project-detail h1,
+.project-detail h2,
+.project-detail h3 {
+    margin-top: 1.5rem;
+}
+
+/* --- Topbar --- */
+.topbar {
+    position: sticky;
+    top: 0;
+    background: #222;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    transition: padding 0.3s;
+}
+.topbar.shrink {
+    padding: 0.5rem 1rem;
+}
+.back-btn {
+    color: white;
+    text-decoration: none;
+}
+
+/* --- Single images --- */
+.project-img.single,
+.single-img-container {
     position: relative;
     width: 100%;
-    max-width: 600px; /* adjust max width as needed */
+    max-width: 600px;
     margin: 1rem auto;
     overflow: hidden;
 }
+.project-img.single img,
+.single-img-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
-.project-img img,
-.single-img-container img,
+/* --- Carousel container --- */
+.project-img.carousel,
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 1rem auto;
+    overflow: hidden;
+}
+.project-img.carousel img,
 .carousel-container img {
     width: 100%;
     height: auto;
     display: block;
 }
 
-/* --- Carousel Arrows --- */
+/* --- Carousel arrows --- */
 .carousel-arrow {
     position: absolute;
     top: 50%;
@@ -27,50 +84,32 @@
     z-index: 10;
     user-select: none;
 }
-
 .carousel-arrow.left {
     left: 10px;
 }
-
 .carousel-arrow.right {
     right: 10px;
 }
 
-/* Optional: captions */
+/* --- Carousel captions --- */
 .carousel-caption {
-    text-align: center;
-    color: white;
-    background-color: rgba(0,0,0,0.5);
-    padding: 0.25rem 0.5rem;
     position: absolute;
     bottom: 0;
     width: 100%;
-    box-sizing: border-box;
-}
-
-/* Topbar shrink effect */
-.topbar {
-    position: sticky;
-    top: 0;
-    background: #222;
+    text-align: center;
+    background: rgba(0,0,0,0.5);
     color: white;
-    padding: 1rem;
-    font-family: sans-serif;
-    z-index: 20;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: padding 0.3s;
-}
-.topbar.shrink {
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 0.5rem;
+    box-sizing: border-box;
+    font-size: 0.9rem;
 }
 
-/* Tags */
+/* --- Tags --- */
 .tags {
     margin: 1rem 0;
 }
 .tags span {
+    display: inline-block;
     background: #444;
     color: white;
     padding: 0.2rem 0.5rem;
@@ -79,10 +118,24 @@
     font-size: 0.9rem;
 }
 
-/* Main content max width */
-.main {
-    max-width: 900px;
-    margin: auto;
-    padding: 1rem;
-    font-family: sans-serif;
+/* --- Lists --- */
+ul, ol {
+    margin-left: 1.25rem;
+}
+
+/* --- Paragraph spacing --- */
+p {
+    line-height: 1.5rem;
+}
+
+/* --- Ensure all images do not exceed container --- */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- Project-specific adjustments --- */
+.project-img {
+    margin-bottom: 1.5rem;
 }
