@@ -19,9 +19,9 @@
     <div class="project-detail">
         <h1>MATLAB Oscilloscope Simulator</h1>
 
-        <!-- Hero image -->
-        <div class="single-img-container">
-            <img src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
+        <!-- Static overview image -->
+        <div class="project-img">
+            <img id="static-img" src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
         </div>
 
         <p>
@@ -32,12 +32,12 @@
 
         <!-- Main Carousel -->
         <h2>Main Features</h2>
-        <div class="carousel-container" id="main-carousel-container">
-            <img id="main-carousel" src="" alt="Oscilloscope Image">
-            <a id="main-prev" class="carousel-arrow left">&#10094;</a>
-            <a id="main-next" class="carousel-arrow right">&#10095;</a>
-            <div id="main-caption" class="carousel-caption"></div>
+        <div class="project-img" id="main-carousel-container">
+            <img id="carousel-image" src="" alt="Oscilloscope Image">
+            <a id="prev-btn" class="carousel-arrow">&#10094;</a>
+            <a id="next-btn" class="carousel-arrow">&#10095;</a>
         </div>
+        <div id="carousel-caption" class="carousel-caption"></div>
 
         <!-- Code / Functionality -->
         <h2>Code / Functionality</h2>
@@ -51,10 +51,10 @@
 
         <!-- Bonus Carousel -->
         <h2>Bonus: Lissajous Patterns</h2>
-        <div class="carousel-container" id="bonus-carousel-container">
+        <div class="project-img" id="bonus-carousel-container">
             <img id="bonus-carousel" src="" alt="Lissajous Pattern">
-            <a id="bonus-prev" class="carousel-arrow left">&#10094;</a>
-            <a id="bonus-next" class="carousel-arrow right">&#10095;</a>
+            <a id="bonus-prev" class="carousel-arrow">&#10094;</a>
+            <a id="bonus-next" class="carousel-arrow">&#10095;</a>
         </div>
 
         <!-- Tags -->
@@ -68,17 +68,19 @@
         <!-- Future Improvements -->
         <h2>Future Improvements</h2>
         <p>
-            Implement cursors; add additional trigger modes (single, delayed); expand math and signal processing options (filters, RMS, averaging); enable real-time input from a microphone or hardware; record and export waveforms.
+            Implement cursors; add additional trigger modes (single, delayed); expand math and signal processing options (filters, RMS, averaging); enable real-time input from a microphone or hardware; record and export waveforms
         </p>
     </div>
 </div>
 
 <script>
-    // Topbar shrink
+    // Topbar shrink on scroll
     const topbar = document.getElementById('topbar');
-    window.addEventListener('scroll', () => topbar.classList.toggle('shrink', window.scrollY > 20));
+    window.addEventListener('scroll', () => {
+        topbar.classList.toggle('shrink', window.scrollY > 20);
+    });
 
-    // Main carousel
+    // --- Main carousel ---
     const mainImages = [
         { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc1.PNG", caption: "Random signals, CH1 + CH2, Time mode" },
         { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc2.PNG", caption: "FFT (Fourier Transform)" },
@@ -87,20 +89,20 @@
         { src: "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/osc4.PNG", caption: "Trigger, Positive slope" }
     ];
     let mainIndex = 0;
-    const mainImg = document.getElementById("main-carousel");
-    const mainCaption = document.getElementById("main-caption");
-    const mainPrev = document.getElementById("main-prev");
-    const mainNext = document.getElementById("main-next");
+    const mainImg = document.getElementById("carousel-image");
+    const mainCaption = document.getElementById("carousel-caption");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
 
     function showMainIndex(i) {
         mainIndex = (i + mainImages.length) % mainImages.length;
         mainImg.src = mainImages[mainIndex].src;
         mainCaption.textContent = mainImages[mainIndex].caption;
     }
-    mainPrev.onclick = () => showMainIndex(mainIndex - 1);
-    mainNext.onclick = () => showMainIndex(mainIndex + 1);
+    prevBtn.onclick = () => showMainIndex(mainIndex - 1);
+    nextBtn.onclick = () => showMainIndex(mainIndex + 1);
 
-    // Bonus carousel
+    // --- Bonus carousel ---
     const bonusImages = [
         "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool3.PNG",
         "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/cool2.PNG",
@@ -117,16 +119,16 @@
         bonusImg.src = bonusImages[bonusIndex];
     };
 
-    // Initialize carousels
+    // Initialize on DOM ready
     document.addEventListener('DOMContentLoaded', () => {
         showMainIndex(0);
         bonusImg.src = bonusImages[0];
     });
 
-    // Keyboard navigation for main carousel
+    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') mainPrev.click();
-        if (e.key === 'ArrowRight') mainNext.click();
+        if (e.key === 'ArrowLeft') prevBtn.click();
+        if (e.key === 'ArrowRight') nextBtn.click();
     });
 </script>
 
