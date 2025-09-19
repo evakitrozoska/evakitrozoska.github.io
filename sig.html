@@ -27,35 +27,32 @@
         </p>
 
         <!-- Project Image (aspect ratio handled) -->
-        <div class="project-img" id="fpga-image-container">
+        <div class="single-img-container" id="fpga-image-container">
             <img id="fpga-image" src="" alt="FPGA Waveform Generator">
         </div>
 
         <!-- Code / Functionality -->
         <h2>Code / Functionality</h2>
-        <
+        <p>
             <b>Lookup Table (LUT):</b> 32-entry sine wave table stores precomputed samples for a quarter of a sine period, copied from C-generated values.<br>
             <b>Phase Accumulator and Step Size:</b> 32-bit phase accumulator increments each clock edge. The step size is calculated from the desired output frequency to provide precise frequency control.<br>
-            <b>Signal Types:</b> 
-                
-                    Sine: LUT with quadrant mirroring, amplitude scaling, PWM conversion.<br>
-                    Square: Compares accumulator to duty threshold.<br>
-                    Sawtooth: Direct ramp from accumulator bits.<br>
-                    Triangle: Folded accumulator for rising and falling slopes.<br>
-                <br>
-            
+            <b>Signal Types:</b><br>
+            &nbsp;&nbsp;Sine: LUT with quadrant mirroring, amplitude scaling, PWM conversion.<br>
+            &nbsp;&nbsp;Square: Compares accumulator to duty threshold.<br>
+            &nbsp;&nbsp;Sawtooth: Direct ramp from accumulator bits.<br>
+            &nbsp;&nbsp;Triangle: Folded accumulator for rising and falling slopes.<br>
             <b>Amplitude and PWM Conversion:</b> Waveforms are scaled and converted into 8-bit PWM output. Future plan: low-pass filter for analog reconstruction.<br>
-            <b>Parameters:</b> 50 MHz system clock, 16-bit frequency control, 8-bit amplitude control, duty cycle 0–100%, phase input reserved for later use.<br>
-    
+            <b>Parameters:</b> 50 MHz system clock, 16-bit frequency control, 8-bit amplitude control, duty cycle 0–100%, phase input reserved for later use.
+        </p>
 
         <!-- Future Improvements -->
         <h2>Future Improvements</h2>
-        
+        <p>
             Refactor and optimize VHDL code for readability and efficiency.<br>
             Finish the PWM filter to visualize the analog waveform.<br>
             Add phase shift control for more advanced signal synthesis.<br>
-            Develop a control interface for easier parameter tuning.<br>
-        </ul>
+            Develop a control interface for easier parameter tuning.
+        </p>
 
         <!-- Tags -->
         <div class="tags">
@@ -72,10 +69,10 @@
     // Shrink topbar on scroll
     const topbar = document.getElementById('topbar');
     window.addEventListener('scroll', () => {
-      topbar.classList.toggle('shrink', window.scrollY > 20);
+        topbar.classList.toggle('shrink', window.scrollY > 20);
     });
 
-    // Set FPGA image and compute aspect ratio dynamically
+    // Set FPGA image and maintain aspect ratio
     const fpgaImgSrc = "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/siggen.PNG";
     const fpgaImg = document.getElementById('fpga-image');
     const fpgaContainer = document.getElementById('fpga-image-container');
@@ -87,7 +84,7 @@
             const ratioPercent = (probe.height / probe.width) * 100;
             fpgaContainer.style.setProperty('--padding-top', ratioPercent + '%');
         };
-        probe.onerror = () => fpgaContainer.style.setProperty('--padding-top', '56.25%');
+        probe.onerror = () => fpgaContainer.style.setProperty('--padding-top', '56.25%'); // fallback
     }
 
     fpgaImg.src = fpgaImgSrc;
@@ -96,4 +93,3 @@
 
 </body>
 </html>
-
