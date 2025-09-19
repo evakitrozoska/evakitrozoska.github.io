@@ -92,7 +92,7 @@ body {
 /* Main content */
 .main {
     flex-grow: 1;
-    padding: 10px; /* reduced padding to remove side space */
+    padding: 0; /* remove side spaces */
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -131,7 +131,8 @@ body {
     color: inherit;
 }
 .project-img {
-    width: 100%;       /* full width */
+    width: 100%;       /* fill container */
+    max-width: none;   /* remove max width */
     height: 450px;     /* adjusted height */
     background-color: #555;
     border-radius: 5px;
