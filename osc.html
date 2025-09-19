@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATLAB Oscilloscope Simulator</title>
+<style>
+    body {
+        font-family: monospace;
+        background-color: #1e1e1e;
+        color: #dcdcdc;
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Topbar */
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #2a2a2a;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .topbar .name {
+        color: #8cff00;
+        font-size: 1.8rem;
+        font-weight: bold;
+        transition: font-size 0.3s ease;
+    }
+    .topbar .back-btn {
+        font-size: 0.95rem;
+        color: #8cff00;
+        text-decoration: none;
+        background-color: #3a3a3a;
+        padding: 5px 10px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    .topbar .back-btn:hover {
+        background-color: #8cff00;
+        color: #1e1e1e;
+    }
+    .topbar.shrink .name { font-size: 1.3rem; }
+    .topbar.shrink { padding: 5px 15px; }
+
+    /* Main content */
+    .main { padding: 20px; max-width: 900px; margin: 0 auto; }
+
+    .project-detail h1 { font-size: 2rem; margin-bottom: 15px; color: #8cff00; }
+    .project-detail h2 { font-size: 1.5rem; margin: 30px 0 15px; color: #8cff00; }
+
+    .project-detail .project-img {
+        width: 100%;
+        height: 300px; 
+        border-radius: 8px;
+        margin-bottom: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+    .project-detail .project-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .carousel-caption {
+        text-align: center;
+        color: #8cff00;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+
+    .project-detail p { line-height: 1.6; margin-bottom: 20px; }
+
+    pre {
+        background-color: #2a2a2a;
+        padding: 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        color: #8cff00;
+        font-size: 0.9rem;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+    .tags span {
+        background-color: #3a3a3a;
+        color: #dcdcdc;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+    }
+
+    /* Carousel arrows */
+    .carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(58,58,58,0.8);
+        color: #8cff00;
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 1.5rem;
+        user-select: none;
+        z-index: 10;
+    }
+    .carousel-arrow:hover { background: #8cff00; color: #1e1e1e; }
+    #prev-btn { left: 10px; }
+    #next-btn { right: 10px; }
+
+    @media screen and (max-width: 768px) { .topbar .name { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar" id="topbar">
+  <span class="name">Projects</span>
+  <a href="index.html" class="back-btn">← Back</a>
+</div>
+
+<!-- Main content -->
+<div class="main">
+    <div class="project-detail">
+        <h1>MATLAB Oscilloscope Simulator</h1>
+
+        <!-- Single static image at top -->
+        <div class="project-img">
+            <img src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/static_overview.jpeg" alt="Oscilloscope Overview">
+        </div>
+
+        <!-- Description -->
+        <p>
+            This MATLAB project is a learning tool designed to understand oscilloscope operation and basic signal analysis in both time and frequency domains.
+            It supports two channels and includes features such as <b>MATH operations</b> (addition, subtraction, multiplication, FFT), 
+            <b>XY mode</b> (Lissajous patterns), <b>trigger settings</b> (level, slope, source), and dynamic random signal generation.
+        </p>
+
+        <!-- Main Carousel -->
+        <div class="project-img">
+            <img id="carousel-image" src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/random_sum.jpeg" alt="Oscilloscope Image">
+            <a id="prev-btn" class="carousel-arrow">&#10094;</a>
+            <a id="next-btn" class="carousel-arrow">&#10095;</a>
+        </div>
+        <div id="carousel-caption" class="carousel-caption">Random signals, CH1 + CH2, Time mode</div>
+
+        <!-- Code / Functionality -->
+        <h2>Code / Functionality</h2>
+        <p>
+            <b>Signal Generation:</b> Generates random test waveforms dynamically with DC, sine, square, and sawtooth components, each with random frequency, amplitude, and phase.<br>
+            <b>Trigger Search:</b> Scans the selected channel for points where the waveform crosses the trigger level in the chosen slope direction. If no crossing is found, a random point is chosen to maintain continuous display (mimicking Auto mode).<br>
+            <b>Math Operations:</b> Real-time CH1 + CH2, CH1 – CH2, CH1 × CH2; FFT for spectral analysis.<br>
+            <b>Coupling:</b> DC and AC; AC mode removes mean automatically.<br>
+            <b>Timer & Updates:</b> A MATLAB timer updates every 50ms. Signals are computed with microsecond resolution. Max visualizable frequency (Nyquist) = 1 / (2 * 1e-6) = 500 kHz.
+        </p>
+
+        <!-- Bonus Carousel -->
+        <h2>Bonus: Cool Lissajous Patterns</h2>
+        <div class="project-img">
+            <img id="bonus-carousel" src="https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/lissajous1.jpeg" alt="Lissajous Pattern">
+            <a id="bonus-prev" class="carousel-arrow">&#10094;</a>
+            <a id="bonus-next" class="carousel-arrow">&#10095;</a>
+        </div>
+
+        <!-- Tags -->
+        <div class="tags">
+            <span>MATLAB</span>
+            <span>Oscilloscope</span>
+            <span>Signal Processing</span>
+            <span>Learning Tool</span>
+        </div>
+
+        <!-- Future Improvements -->
+        <h2>Future Improvements</h2>
+        <p>
+            Implement cursors for precise measurements, add additional trigger modes (single, delayed), expand math and signal processing options (filters, RMS, averaging), enable real-time input from a microphone or hardware, record and export waveforms, and enhance the UI for a more professional look.
+        </p>
+    </div>
+</div>
+
+<script>
+    // Shrink topbar on scroll
+    const topbar = document.getElementById('topbar');
+    window.addEventListener('scroll', () => {
+      topbar.classList.toggle('shrink', window.scrollY > 20);
+    });
+
+    // Main carousel
+    const mainImages = [
+        { src: "https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/random_sum.jpeg", caption: "Random signals, CH1 + CH2, Time mode" },
+        { src: "https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/fourier.jpeg", caption: "FFT (Fourier Transform)" },
+        { src: "https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/xy_mode.jpeg", caption: "XY Mode (Lissajous)" },
+        { src: "https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/trigger_neg.jpeg", caption: "Trigger, Negative slope" },
+        { src: "https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/trigger_pos.jpeg", caption: "Trigger, Positive slope" }
+    ];
+    let mainIndex = 0;
+    const mainImg = document.getElementById("carousel-image");
+    const mainCaption = document.getElementById("carousel-caption");
+    document.getElementById("prev-btn").onclick = () => {
+        mainIndex = (mainIndex - 1 + mainImages.length) % mainImages.length;
+        mainImg.src = mainImages[mainIndex].src;
+        mainCaption.textContent = mainImages[mainIndex].caption;
+    };
+    document.getElementById("next-btn").onclick = () => {
+        mainIndex = (mainIndex + 1) % mainImages.length;
+        mainImg.src = mainImages[mainIndex].src;
+        mainCaption.textContent = mainImages[mainIndex].caption;
+    };
+
+    // Bonus carousel
+    const bonusImages = [
+        "https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/lissajous1.jpeg",
+        "https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/lissajous2.jpeg",
+        "https://raw.githubusercontent.com/evakitrozoska/oscilloscope/main/lissajous3.jpeg"
+    ];
+    let bonusIndex = 0;
+    const bonusImg = document.getElementById("bonus-carousel");
+    document.getElementById("bonus-prev").onclick = () => {
+        bonusIndex = (bonusIndex - 1 + bonusImages.length) % bonusImages.length;
+        bonusImg.src = bonusImages[bonusIndex];
+    };
+    document.getElementById("bonus-next").onclick = () => {
+        bonusIndex = (bonusIndex + 1) % bonusImages.length;
+        bonusImg.src = bonusImages[bonusIndex];
+    };
+</script>
+
+</body>
+</html>
