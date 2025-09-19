@@ -33,11 +33,11 @@
             DAW: <b>Cubase 12</b>.
         </p>
 
-        <!-- Image Carousel (after first paragraph) -->
-        <div class="project-img" id="theremin-carousel-container">
+        <!-- Image Carousel -->
+        <div class="carousel-container" id="theremin-carousel-container">
             <img id="theremin-carousel" src="" alt="Project Image">
-            <a id="theremin-prev" class="carousel-arrow">&#10094;</a>
-            <a id="theremin-next" class="carousel-arrow">&#10095;</a>
+            <a id="theremin-prev" class="carousel-arrow left">&#10094;</a>
+            <a id="theremin-next" class="carousel-arrow right">&#10095;</a>
         </div>
 
         <!-- Components -->
@@ -101,10 +101,10 @@
     // Shrink topbar on scroll
     const topbar = document.getElementById('topbar');
     window.addEventListener('scroll', () => {
-      topbar.classList.toggle('shrink', window.scrollY > 20);
+        topbar.classList.toggle('shrink', window.scrollY > 20);
     });
 
-    // Carousel images
+    // Carousel setup
     const thereminImages = [
       "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/9.png",
       "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/8.png",
@@ -115,7 +115,6 @@
     const thereminImg = document.getElementById("theremin-carousel");
     const thereminContainer = document.getElementById("theremin-carousel-container");
 
-    // Set container aspect ratio based on image
     function setThereminAspect(imgSrc) {
         const probe = new Image();
         probe.src = imgSrc;
@@ -126,21 +125,17 @@
         probe.onerror = () => thereminContainer.style.setProperty('--padding-top', '56.25%');
     }
 
-    // Show image at index
     function showThereminIndex(i) {
         thereminIndex = (i + thereminImages.length) % thereminImages.length;
         thereminImg.src = thereminImages[thereminIndex];
         setThereminAspect(thereminImages[thereminIndex]);
     }
 
-    // Initialize carousel
     showThereminIndex(0);
 
-    // Arrow buttons
     document.getElementById("theremin-prev").onclick = () => showThereminIndex(thereminIndex - 1);
     document.getElementById("theremin-next").onclick = () => showThereminIndex(thereminIndex + 1);
 
-    // Keyboard support
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') showThereminIndex(thereminIndex - 1);
         if (e.key === 'ArrowRight') showThereminIndex(thereminIndex + 1);
