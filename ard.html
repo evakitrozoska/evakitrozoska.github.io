@@ -72,14 +72,15 @@
         color: #8cff00;
     }
 
-    .project-detail .project-img,
-    .project-detail .project-video {
+    .project-detail .project-img {
         width: 100%;
         height: auto;
         max-height: 400px;
         background-color: #444;
         border-radius: 8px;
         margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
     }
 
     .project-detail p {
@@ -112,6 +113,31 @@
         font-size: 0.85rem;
     }
 
+    /* Carousel arrows */
+    .carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #3a3a3a;
+        color: #8cff00;
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 1.5rem;
+        user-select: none;
+    }
+    .carousel-arrow:hover {
+        background: #8cff00;
+        color: #1e1e1e;
+    }
+    #prev-btn {
+        left: 10px;
+    }
+    #next-btn {
+        right: 10px;
+    }
+
     @media screen and (max-width: 768px) {
         .topbar .name {
             font-size: 1.5rem;
@@ -133,12 +159,11 @@
     <div class="project-detail">
         <h1>MIDI Theremin with Arduino</h1>
 
-        <!-- Video -->
-        <div class="project-video">
-            <video width="100%" controls>
-              <source src="videos/ard_video.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
+        <!-- Image Carousel -->
+        <div class="project-img">
+            <img id="carousel-image" src="images/img1.jpg" alt="Project Image" style="width:100%; border-radius:8px;">
+            <a id="prev-btn" class="carousel-arrow">&#10094;</a>
+            <a id="next-btn" class="carousel-arrow">&#10095;</a>
         </div>
 
         <!-- Description -->
@@ -222,7 +247,23 @@
         topbar.classList.remove('shrink');
       }
     });
+
+    // Carousel
+    const images = [
+      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/7.jpeg",
+      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/8.jpeg",
+      "https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/9.jpeg"
+    ];
+    let currentIndex = 0;
+    const imgElement = document.getElementById("carousel-image");
+    document.getElementById("prev-btn").onclick = () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      imgElement.src = images[currentIndex];
+    };
+    document.getElementById("next-btn").onclick = () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      imgElement.src = images[currentIndex];
+    };
 </script>
 </body>
 </html>
-
