@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Portrait Gallery</title>
+<style>
+  /* --- Fade overlay used for page transitions --- */
+  #fade-overlay {
+    position: fixed;
+    inset: 0;
+    background: #888;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    z-index: 9998;
+  }
+  #fade-overlay.active { opacity: 1; pointer-events: auto; }
+
+  /* --- Basic body fade-in/out --- */
+  html,body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: monospace;
+    background: #f5f5f5;
+    color: #222;
+    overflow-y: auto;
+    -webkit-font-smoothing:antialiased;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  body.loaded { opacity: 1; }
+
+  /* --- Top bar --- */
+  .topbar{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 18px;
+    background:#e0e0e0;
+    transition:padding .25s ease;
+  }
+  .topbar .title { color:#444; font-size:1.2rem; font-weight:700; }
+  .topbar .back {
+    text-decoration:none;
+    background:#dcdcdc;
+    color:#333;
+    padding:7px 12px;
+    border-radius:6px;
+  }
+  .topbar .back:hover { background:#505050; color:#8cff00; }
+
+  .wrap { padding:18px; max-width:1400px; margin:0 auto; box-sizing:border-box; }
+
+  /* --- Gallery layout --- */
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .item {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #ddd;
+    display:block;
+  }
+
+  .item img {
+    display:block;
+    width:100%;
+    height:auto;
+    object-fit: cover;
+    transition: transform .35s ease, filter .25s ease;
+    transform-origin: center;
+    cursor: zoom-in;
+    will-change: transform;
+  }
+  .item img:hover { transform: scale(1.03); filter:brightness(1.03); }
+
+  @media (min-width: 820px) {
+    .gallery {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .item {
+      height: clamp(360px, 38vh, 480px);
+    }
+    .item img {
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      cursor: zoom-in;
+    }
+    .item img:hover { transform: scale(1.02); }
+  }
+
+  /* --- Fullscreen / lightbox --- */
+  #fullscreen {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity .3s ease;
+  }
+  #fullscreen.show { display:flex; opacity:1; }
+  #fullscreen img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+    cursor: zoom-out;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+  }
+</style>
+</head>
+<body>
+
+<div id="fade-overlay"></div>
+
+<header class="topbar">
+  <div class="title">Project Gallery</div>
+  <a class="back" href="visual.html">← Back</a>
+</header>
+
+<main class="wrap">
+  <section class="gallery" id="gallery">
+    <!-- 17 images -->
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/50.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/50.jpg" alt="Portrait 50">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/51.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/51.jpg" alt="Portrait 51">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/52.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/52.jpg" alt="Portrait 52">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/53.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/53.jpg" alt="Portrait 53">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/54.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/54.jpg" alt="Portrait 54">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/55.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/55.jpg" alt="Portrait 55">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/56.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/56.jpg" alt="Portrait 56">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/57.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/57.jpg" alt="Portrait 57">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/58.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/58.jpg" alt="Portrait 58">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/59.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/59.jpg" alt="Portrait 59">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/60.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/60.jpg" alt="Portrait 60">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/61.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/61.jpg" alt="Portrait 61">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/62.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/62.jpg" alt="Portrait 62">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/63.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/63.jpg" alt="Portrait 63">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/64.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/64.jpg" alt="Portrait 64">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/65.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/65.jpg" alt="Portrait 65">
+    </a>
+    <a class="item" href="#" data-full="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/66.jpg">
+      <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/66.jpg" alt="Portrait 66">
+    </a>
+  </section>
+</main>
+
+<!-- Fullscreen overlay -->
+<div id="fullscreen">
+  <img src="" alt="">
+</div>
+
+<script>
+// Page fade-in
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(()=> document.body.classList.add('loaded'), 10);
+  document.getElementById('fade-overlay').classList.remove('active');
+});
+
+// Shrink topbar
+window.addEventListener('scroll', () => {
+  const top = document.querySelector('.topbar');
+  if (window.scrollY > 18) top.style.padding = '6px 14px';
+  else top.style.padding = '';
+});
+
+// Fullscreen open on click
+const fullscreen = document.getElementById('fullscreen');
+const fsImg = fullscreen.querySelector('img');
+document.querySelectorAll('.gallery img').forEach(img => {
+  img.addEventListener('click', (e) => {
+    e.preventDefault();
+    fsImg.src = img.src;
+    fsImg.alt = img.alt;
+    fullscreen.classList.add('show');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+// Close fullscreen on click
+fullscreen.addEventListener('click', () => {
+  fullscreen.classList.remove('show');
+  fsImg.src = '';
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
+});
+</script>
+
+</body>
+</html>
