@@ -168,6 +168,18 @@ body {
     }
     .main { max-height: none; }
 }
+
+    @media (max-width: 480px) {
+    .categories {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .categories button {
+        flex: 1 1 auto; /* allows them to shrink and wrap naturally */
+    }
+}
+
 </style>
 </head>
 
@@ -267,5 +279,6 @@ filterProjects();
 </script>
 </body>
 </html>
+
 
 
