@@ -137,7 +137,7 @@ body {
 }
 .project-img {
     width: 100%;
-    height: 450px;
+    aspect-ratio: 16 / 9; /* keeps consistent ratio on all screens */
     background-color: #555;
     background-size: cover;
     background-position: center;
@@ -167,21 +167,15 @@ body {
         position: relative;
     }
     .main { max-height: none; }
-}
-
-   @media (max-width: 480px) {
     .categories {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 6px;
     }
     .categories button {
-        flex: 0 0 auto; /* buttons keep natural width */
+        flex: 0 0 auto; /* natural width */
     }
 }
-
-}
-
 </style>
 </head>
 
@@ -219,7 +213,7 @@ body {
             </a>
         </div>
 
-         <div class="project-item" data-category="Arduino,MIDI,C / Cpp">
+        <div class="project-item" data-category="Arduino,MIDI,C / Cpp">
             <div class="project-text">MIDI Theremin with Arduino</div>
             <a href="ard.html">
                 <div class="project-img" style="background-image: url('https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/10.png');"></div>
@@ -281,7 +275,3 @@ filterProjects();
 </script>
 </body>
 </html>
-
-
-
-
