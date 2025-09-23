@@ -44,6 +44,57 @@ body.loaded { opacity: 1; }
 .sidebar a { text-decoration: none; color: #333; padding: 8px 18px; display: block; font-size: 0.9rem; border-radius: 6px; transition: all 0.3s ease; }
 .sidebar a:hover { color: #8cff00; background-color: #3a3a3a; cursor: pointer; }
 
+/* Spacer to push contact form to bottom */
+.sidebar .spacer { flex-grow: 1; }
+
+/* Minimalistic Contact box */
+.sidebar .contact-box { 
+    padding: 12px; 
+    background-color: #e0e0e0; 
+    border-radius: 6px; 
+    font-family: monospace; 
+    margin-top: 20px; 
+}
+.sidebar .contact-box h3 { 
+    margin-bottom: 8px; 
+    font-size: 1.1rem; 
+}
+.sidebar .contact-box input,
+.sidebar .contact-box textarea { 
+    width: 100%; 
+    padding: 5px; 
+    border-radius: 4px; 
+    border: 1px solid #aaa; 
+    margin-bottom: 6px; 
+    font-family: monospace; 
+    font-size: 0.9rem;
+    background-color: #f5f5f5;
+    color: #333;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+.sidebar .contact-box input:focus,
+.sidebar .contact-box textarea:focus {
+    border-color: #999999; /* subtle gray */
+    box-shadow: 0 0 4px rgba(153, 153, 153, 0.4); 
+    outline: none;
+}
+
+.sidebar .contact-box button { 
+    width: 100%; 
+    padding: 6px; 
+    border: none; 
+    border-radius: 4px; 
+    background-color: #bfbfbf; /* darker gray for visibility */
+    color: #3a3a3a; 
+    cursor: pointer; 
+    font-family: monospace;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+.sidebar .contact-box button:hover { 
+    background-color: #a6a6a6; /* slightly darker on hover */
+}
+
 /* Main content */
 .main { flex-grow: 1; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
 
@@ -70,8 +121,12 @@ body.loaded { opacity: 1; }
 
 /* Responsive */
 @media (max-width: 768px) { .sidebar { width: 200px; } }
-@media (max-width: 480px) { body { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } .main { max-height: none; } }
-
+@media (max-width: 480px) { 
+    body { flex-direction: column; } 
+    .sidebar { width: 100%; height: auto; position: relative; } 
+    .main { max-height: none; } 
+    .sidebar .contact-box button { font-size: 1rem; } 
+}
 </style>
 </head>
 
@@ -84,6 +139,21 @@ body.loaded { opacity: 1; }
     <h2>Eva Kitrozoska</h2>
     <p>Portraits and visual art.</p>
     <a href="index.html">Back</a>
+
+    <!-- Spacer to push contact form to bottom -->
+    <div class="spacer"></div>
+
+    <!-- Contact form -->
+    <div class="contact-box">
+        <h3>Contact Me</h3>
+        <form id="contact-form" action="https://formspree.io/f/xovkqebd" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="3" placeholder="Your Message" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <p id="status"></p>
+    </div>
 </div>
 
 <!-- Main content -->
@@ -96,8 +166,7 @@ body.loaded { opacity: 1; }
         <div class="project-item">
             <div class="project-text">I Am Woman Conference Portraits 2025</div>
             <a href="conf3.html">
-                <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/conf3cover.jpg
-                    " alt="Conference Portrait 2025">
+                <img loading="lazy" src="https://raw.githubusercontent.com/evakitrozoska/evakitrozoska.github.io/main/conf3cover.jpg" alt="Conference Portrait 2025">
             </a>
         </div>
 
@@ -136,14 +205,32 @@ document.querySelectorAll('a').forEach(link => {
         }
     });
 });
+
+// Formspree submission
+document.getElementById('contact-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const form = e.target;
+    const status = document.getElementById('status');
+    const data = new FormData(form);
+
+    fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    }).then(response => {
+        if(response.ok){
+            status.textContent = "Message sent!";
+            form.reset();
+        } else {
+            response.json().then(data => {
+                status.textContent = data.errors ? data.errors.map(e => e.message).join(", ") : "Failed to send message.";
+            })
+        }
+    }).catch(() => {
+        status.textContent = "Failed to send message.";
+    });
+});
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
